@@ -1,21 +1,16 @@
 import { useState } from "react";
 import axios from "axios";
 import Header from "./components/Header";
-import { useCookies } from "react-cookie";
 
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  // const [cookies, setCookie] = useCookies([
-  //   "Authorization",
-  //   "Authorization_refresh",
-  // ]);
 
-  const handleLogin = async () => {
+  const handleSignup = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/users/login",
+        "http://localhost:8080/api/users/signup",
         {
           email,
           password,
@@ -23,24 +18,17 @@ const Login = () => {
       );
 
       if (response.status === 200) {
-        setMessage("로그인이 성공적으로 완료되었습니다.");
-        // const token = response.headers.authorization;
-        // const refreshToken = response.headers.authorization_refresh;
-
-        // setCookie("Authorization", token, { path: "/" });
-        // setCookie("Authorization_refresh", refreshToken, { path: "/" });
-
-        window.location.href = "/";
+        setMessage("회원가입이 성공적으로 완료되었습니다.");
       }
     } catch (error) {
-      setMessage("로그인 중 오류가 발생했습니다.");
+      setMessage("회원가입 중 오류가 발생했습니다.");
     }
   };
 
   return (
     <div>
       <Header />
-      <h1>로그인 페이지</h1>
+      <h1>회원가입 페이지</h1>
       <input
         type="email"
         placeholder="이메일"
@@ -53,10 +41,10 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleLogin}>로그인</button>
+      <button onClick={handleSignup}>회원가입</button>
       <p>{message}</p>
     </div>
   );
 };
 
-export default Login;
+export default Signup;
