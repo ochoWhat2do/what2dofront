@@ -1,0 +1,23 @@
+/* Header.module.css */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  padding: 0 20px; /* 좌우 여백을 20px로 설정 */
+  background-color: #f0f0f0;
+}
+
+.logo img {
+  width: 100px;
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px; /* 로그인 버튼과 회원가입 버튼 사이의 간격을 20px로 설정 */
+}
+
+.navItem {
+  margin-right: 100px; /* 오른쪽 여백을 100px로 설정 */
+}
