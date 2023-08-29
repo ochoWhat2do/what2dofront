@@ -1,18 +1,18 @@
-import React from "react";
-import Link from "next/link";
-import { useCookies } from "react-cookie"; // Import useCookies
-import styles from "./Header.module.css";
-import { useRouter } from "next/router";
+import React from 'react'
+import Link from 'next/link'
+import { useCookies } from 'react-cookie' // Import useCookies
+import styles from './Header.module.css'
+import { useRouter } from 'next/router'
 
 const Header = () => {
-  const [cookies, , removeCookie] = useCookies(["authorization"]); // Use cookies and removeCookie
-  const router = useRouter();
+  const [cookies, , removeCookie] = useCookies(['authorization']) // Use cookies and removeCookie
+  const router = useRouter()
 
   const handleLogout = () => {
     // Remove "authorization" cookie
-    removeCookie("authorization");
-    router.push("/");
-  };
+    removeCookie('authorization')
+    router.push('/')
+  }
 
   return (
     <header className={styles.header}>
@@ -40,7 +40,7 @@ const Header = () => {
         </ul>
       </nav>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

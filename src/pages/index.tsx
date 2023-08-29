@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import Header from "./components/Header";
-import { useCookies } from "react-cookie"; // Import useCookies hook here
+import React, { useEffect } from 'react'
+import Header from './components/Header'
+import { useCookies } from 'react-cookie' // Import useCookies hook here
 
 export default function Home() {
   return (
@@ -11,5 +11,5 @@ export default function Home() {
         <h2>메인화면</h2>
       </div>
     </div>
-  );
+  )
 }
