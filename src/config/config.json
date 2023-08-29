@@ -1,0 +1,10 @@
+{
+  "development": {
+    "BACKEND_URL": "...",
+    "HTTP_ONLY": false
+  },
+  "production": {
+    "BACKEND_URL": "...",
+    "HTTP_ONLY": true
+  }
+}

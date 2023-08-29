@@ -1,25 +1,25 @@
-// auth.ts
-
 import { useEffect } from 'react'
 import axios from 'axios'
-import { useCookies } from 'react-cookie'
+import { getCookie, setCookie } from '../utils/cookie'
+import { useRouter } from 'next/router'
 
 const otherHost = 'http://localhost:8080'
 const bearer = 'Bearer '
 
 // Define a custom hook for fetching user info
 export function useFetchUserInfo() {
-  const [cookies, setCookie] = useCookies([
-    'authorization',
-    'authorization_refresh',
-    'user_info',
-  ])
+  const router = useRouter()
+
+  // const [cookies, setCookie] = useCookies([
+  //   'authorization',
+  //   'authorization_refresh',
+  //   'user_info',
+  // ])
 
   async function fetchUserInfo() {
-    const auth = cookies['authorization']
-
+    const auth = getCookie('authorization')
     if (!auth) {
-      window.location.href = '/login'
+      router.push('/login')
       return
     }
 
@@ -32,18 +32,24 @@ export function useFetchUserInfo() {
       const responseData = response.data
 
       if (!responseData.email) {
-        window.location.href = '/login'
+        router.push('/login')
         return
       }
 
-      const { email, admin } = responseData
+      const { email, admin, picture, nickname } = responseData
       // Save data in cookies as JSON
       setCookie(
         'user_info',
-        JSON.stringify({ email, role: admin ? 'ADMIN' : 'USER' }),
+        JSON.stringify({
+          email,
+          role: admin ? 'ADMIN' : 'USER',
+          picture: picture || '', // Use picture if available, otherwise empty string
+          nickname: nickname,
+        }),
       )
     } catch (error) {
-      // Handle error or logout if needed
+      setCookie('authorization', '', { expires: new Date(0) })
+      router.push('/login')
     }
   }
 

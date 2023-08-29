@@ -1,18 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useCookies } from 'react-cookie' // Import useCookies
 import styles from './Header.module.css'
 import { useRouter } from 'next/router'
 
+interface UserInfo {
+  picture: string
+  email: string
+  nickname: string
+}
+
 const Header = () => {
-  const [cookies, , removeCookie] = useCookies(['authorization']) // Use cookies and removeCookie
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'authorization',
+    'user_info',
+  ])
   const router = useRouter()
 
   const handleLogout = () => {
-    // Remove "authorization" cookie
     removeCookie('authorization')
     router.push('/')
   }
+
+  const isAuthenticated = !!cookies.authorization // Convert to boolean
+  const [isClientSideRendered, setIsClientSideRendered] = useState(false)
+  useEffect(() => {
+    setIsClientSideRendered(true)
+  }, [])
 
   return (
     <header className={styles.header}>
@@ -23,19 +37,37 @@ const Header = () => {
       </div>
       <nav className={styles.nav}>
         <ul>
-          {cookies.authorization ? ( // Check if "authorization" cookie exists
-            <li className={styles.navItem}>
-              <button onClick={handleLogout}>로그아웃</button>
-            </li>
-          ) : (
-            <li className={styles.navItem}>
-              <Link href="/login">로그인</Link>
-            </li>
-          )}
-          {!cookies.authorization && ( // Show signup link when not logged in
-            <li className={styles.navItem}>
-              <Link href="/signup">회원가입</Link>
-            </li>
+          {isClientSideRendered && (
+            <>
+              {isAuthenticated && (
+                <li className={styles.navItem}>
+                  <Link href="/profile">
+                    <img
+                      src={
+                        cookies.user_info && cookies.user_info.picture
+                          ? cookies.user_info.picture
+                          : '/images/ic-person.png'
+                      }
+                      alt="프로필 이미지"
+                    />
+                  </Link>
+                </li>
+              )}
+              {isAuthenticated ? (
+                <li className={styles.navItem}>
+                  <button onClick={handleLogout}>로그아웃</button>
+                </li>
+              ) : (
+                <li className={styles.navItem}>
+                  <Link href="/login">로그인</Link>
+                </li>
+              )}
+              {!isAuthenticated && (
+                <li className={styles.navItem}>
+                  <Link href="/signup">회원가입</Link>
+                </li>
+              )}
+            </>
           )}
         </ul>
       </nav>

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import Header from './components/Header'
-import { useCookies } from 'react-cookie'
+import { setCookie } from '../utils/cookie'
 import { useRouter } from 'next/router'
 import styles from '../styles/login.module.css' // Import login.module.css
 
@@ -10,10 +10,11 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
-  const [cookies, setCookie] = useCookies([
-    'authorization',
-    'authorization_refresh',
-  ])
+  // const [cookies, setCookie] = useCookies([
+  //   'authorization',
+  //   'authorization_refresh',
+  //   'user_info',
+  // ])
 
   const handleLogin = async () => {
     try {
@@ -28,10 +29,19 @@ const Login = () => {
       if (response.status === 200) {
         setMessage('로그인이 성공적으로 완료되었습니다.')
         // Save tokens in cookies
-        setCookie('authorization', response.headers['authorization'])
+        setCookie('authorization', response.headers['authorization'], {
+          path: '/',
+          secure: true,
+          sameSite: 'none',
+        })
         setCookie(
           'authorization_refresh',
           response.headers['authorization_refresh'],
+          {
+            path: '/',
+            secure: true,
+            sameSite: 'none',
+          },
         )
 
         router.push('/')
