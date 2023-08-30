@@ -54,6 +54,20 @@ const Profile = () => {
     }
   }
 
+  const handleEditProfile = () => {
+    const shouldEdit = window.confirm('프로필을 수정하시겠습니까?')
+    if (shouldEdit) {
+      editProfile()
+    }
+  }
+
+  const handleDeleteAccount = () => {
+    const shouldDelete = window.confirm('회원을 탈퇴하시겠습니까?')
+    if (shouldDelete) {
+      deleteAccount()
+    }
+  }
+
   const editProfile = async () => {
     try {
       const formData = new FormData()
@@ -96,15 +110,20 @@ const Profile = () => {
 
   const deleteAccount = async () => {
     try {
+      const withdrawalData = {
+        password: password, // Add the password value
+      }
+
       await axios.delete(`${otherHost}/api/users/info`, {
         headers: {
           Authorization: `Bearer ${auth}`,
         },
+        data: withdrawalData,
       })
-
+      window.alert('회원탈퇴를 하였습니다.')
       router.push('/login')
-    } catch (error) {
-      console.error('Error deleting account:', error)
+    } catch (error: any) {
+      window.alert(error.response.data.statusMessage)
     }
   }
 
@@ -178,12 +197,15 @@ const Profile = () => {
           />
         </div>
         <div className={styles['profile-input-container']}>
-          <button className={styles['profile-id-submit']} onClick={editProfile}>
+          <button
+            className={styles['profile-id-submit']}
+            onClick={handleEditProfile}
+          >
             수정
           </button>
           <button
             className={styles['profile-id-delete']}
-            onClick={deleteAccount}
+            onClick={handleDeleteAccount}
           >
             회원 탈퇴
           </button>

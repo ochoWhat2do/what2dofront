@@ -31,7 +31,7 @@ const Header = () => {
   const handleLogout = () => {
     removeCookie('authorization')
     removeCookie('user_info')
-    router.push('/')
+    router.push('/login')
   }
 
   const isAuthenticated = !!getCookie('authorization') // Convert to boolean
