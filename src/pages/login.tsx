@@ -53,7 +53,7 @@ const Login = () => {
 
   return (
     <div>
-      <Header /> {/* Render the Header component here */}
+      <Header />
       <div className={styles['login-form']}>
         {' '}
         {/* Use styles["class-name"] */}

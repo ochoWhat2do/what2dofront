@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Header from './components/Header'
-import { useCookies } from 'react-cookie'
+import { getCookie, setCookie } from '../utils/cookie'
 import { useRouter } from 'next/router'
 import styles from '../styles/profile.module.css' // Import profile.module.css
 
 const Profile = () => {
   const otherHost = 'http://localhost:8080'
   const router = useRouter()
+  const auth = getCookie('authorization')
   const [email, setEmail] = useState('')
   const [picture, setPicture] = useState('')
   const [nickname, setNickName] = useState('')
@@ -17,11 +18,8 @@ const Profile = () => {
   const [selectedPicture, setselectedPicture] = useState<null | File>(
     null as File | null,
   )
-  const [cookies, setCookie] = useCookies([
-    'authorization',
-    'authorization_refresh',
-    'user_info',
-  ])
+
+  const bearer = 'Bearer '
 
   useEffect(() => {
     getProfile()
@@ -29,8 +27,13 @@ const Profile = () => {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get(otherHost + '/api/users/profile')
-      setPicture(response.data.imageUrl)
+      const response = await axios.get(`${otherHost}/api/users/profile`, {
+        headers: {
+          Authorization: bearer + auth,
+        },
+      })
+
+      setPicture(response.data.picture)
       setIntroduction(response.data.introduction)
       setNickName(response.data.nickname)
       setEmail(response.data.email)
@@ -54,32 +57,46 @@ const Profile = () => {
   const editProfile = async () => {
     try {
       const formData = new FormData()
-      formData.append('introduction', introduction)
-      formData.append('password', password)
       if (selectedPicture) {
         formData.append('profilePic', selectedPicture)
       }
+
+      const jsonBody = {
+        email: email,
+        introduction: introduction,
+        password: password,
+        nickname: nickname,
+      }
+
+      formData.append(
+        'requestDto',
+        new Blob([JSON.stringify(jsonBody)], {
+          type: 'application/json',
+        }),
+      )
+
       const response = await axios.put(
         otherHost + '/api/users/info',
         formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${auth}`,
           },
         },
       )
 
-      setMessage(response.data.msg)
+      window.alert('프로필을 수정하였습니다.')
       router.reload()
     } catch (error: any) {
-      // 이 부분에서 error 변수의 형식을 any로 지정
-      setMessage(error.response.data.msg)
+      window.alert(error.response.data.statusMessage)
+      return
     }
   }
 
   return (
     <div>
-      <Header /> {/* Render the Header component here */}
+      <Header />
       <div className={styles['profile-form']}>
         {' '}
         {/* Use styles["class-name"] */}
@@ -93,6 +110,7 @@ const Profile = () => {
             className={styles['profile-input-box']}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            readOnly
           />
         </div>
         <div className={styles['profile-input-container']}>
@@ -104,6 +122,17 @@ const Profile = () => {
             className={styles['profile-input-box']}
             value={nickname}
             onChange={(e) => setNickName(e.target.value)}
+          />
+        </div>
+        <div className={styles['profile-input-container']}>
+          <div className="profile-id-label">자기소개</div>
+          <input
+            type="text"
+            name="introduction"
+            id="introduction"
+            className={styles['profile-input-box']}
+            value={introduction}
+            onChange={(e) => setIntroduction(e.target.value)}
           />
         </div>
         <div className={styles['profile-input-container']}>
@@ -119,11 +148,13 @@ const Profile = () => {
         </div>
         <div className={styles['profile-input-container']}>
           <div className="profile-id-label">프로필 사진</div>
-          <img
-            src={picture}
-            alt="프로필 사진"
-            className={`${styles['profile-image']} ${styles['rounded']}`}
-          />
+          <div className={styles['profile-image-container']}>
+            <img
+              src={picture || '/images/ic-person.png'}
+              alt="프로필 사진"
+              className={`${styles['profile-image']} ${styles['rounded']}`}
+            />
+          </div>
           <input
             type="file"
             id="profile-pic"

@@ -28,6 +28,37 @@ const Header = () => {
     setIsClientSideRendered(true)
   }, [])
 
+  const authenticatedContent = isAuthenticated && (
+    <li className={styles.navItem}>
+      <Link href="/profile">
+        <img
+          src={
+            cookies.user_info && cookies.user_info.picture
+              ? cookies.user_info.picture
+              : '/images/ic-person.png'
+          }
+          alt="프로필 이미지"
+        />
+      </Link>
+    </li>
+  )
+
+  const authButtons = isAuthenticated ? (
+    <li className={styles.navItem}>
+      <button onClick={handleLogout}>로그아웃</button>
+    </li>
+  ) : (
+    <li className={styles.navItem}>
+      <Link href="/login">로그인</Link>
+    </li>
+  )
+
+  const signupLink = !isAuthenticated && (
+    <li className={styles.navItem}>
+      <Link href="/signup">회원가입</Link>
+    </li>
+  )
+
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
@@ -39,34 +70,9 @@ const Header = () => {
         <ul>
           {isClientSideRendered && (
             <>
-              {isAuthenticated && (
-                <li className={styles.navItem}>
-                  <Link href="/profile">
-                    <img
-                      src={
-                        cookies.user_info && cookies.user_info.picture
-                          ? cookies.user_info.picture
-                          : '/images/ic-person.png'
-                      }
-                      alt="프로필 이미지"
-                    />
-                  </Link>
-                </li>
-              )}
-              {isAuthenticated ? (
-                <li className={styles.navItem}>
-                  <button onClick={handleLogout}>로그아웃</button>
-                </li>
-              ) : (
-                <li className={styles.navItem}>
-                  <Link href="/login">로그인</Link>
-                </li>
-              )}
-              {!isAuthenticated && (
-                <li className={styles.navItem}>
-                  <Link href="/signup">회원가입</Link>
-                </li>
-              )}
+              {authenticatedContent}
+              {authButtons}
+              {signupLink}
             </>
           )}
         </ul>
