@@ -10,11 +10,6 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
-  // const [cookies, setCookie] = useCookies([
-  //   'authorization',
-  //   'authorization_refresh',
-  //   'user_info',
-  // ])
 
   const handleLogin = async () => {
     try {

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useCookies } from 'react-cookie' // Import useCookies
+import { getCookie, setCookie, removeCookie } from '../../utils/cookie'
 import styles from './Header.module.css'
 import { useRouter } from 'next/router'
+import { useFetchUserInfo } from '../../utils/auth' // Import useFetchUserInfo from auth.ts
 
 interface UserInfo {
   picture: string
@@ -11,32 +12,44 @@ interface UserInfo {
 }
 
 const Header = () => {
-  const [cookies, setCookie, removeCookie] = useCookies([
-    'authorization',
-    'user_info',
-  ])
   const router = useRouter()
+  const [userPicture, setUserPicture] = useState<string>('') // State to hold user picture
+  const [isDataFetched, setIsDataFetched] = useState(false)
+  const fetchUserInfo = useFetchUserInfo()
+
+  const fetchUserInfoAndRender = async () => {
+    await fetchUserInfo()
+
+    const user_info = getCookie('user_info')
+    if (user_info && user_info.picture) {
+      setUserPicture(user_info.picture)
+    }
+
+    setIsDataFetched(true)
+  }
 
   const handleLogout = () => {
     removeCookie('authorization')
+    removeCookie('user_info')
     router.push('/')
   }
 
-  const isAuthenticated = !!cookies.authorization // Convert to boolean
+  const isAuthenticated = !!getCookie('authorization') // Convert to boolean
   const [isClientSideRendered, setIsClientSideRendered] = useState(false)
   useEffect(() => {
+    fetchUserInfoAndRender()
+    const user_info = getCookie('user_info')
+    if (user_info && user_info.picture) {
+      setUserPicture(user_info.picture)
+    }
     setIsClientSideRendered(true)
   }, [])
 
-  const authenticatedContent = isAuthenticated && (
+  const authenticatedContent = isAuthenticated && isClientSideRendered && (
     <li className={styles.navItem}>
       <Link href="/profile">
         <img
-          src={
-            cookies.user_info && cookies.user_info.picture
-              ? cookies.user_info.picture
-              : '/images/ic-person.png'
-          }
+          src={userPicture || '/images/ic-person.png'} // Use the state value here
           alt="프로필 이미지"
         />
       </Link>

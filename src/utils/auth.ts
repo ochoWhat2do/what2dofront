@@ -10,12 +10,6 @@ const bearer = 'Bearer '
 export function useFetchUserInfo() {
   const router = useRouter()
 
-  // const [cookies, setCookie] = useCookies([
-  //   'authorization',
-  //   'authorization_refresh',
-  //   'user_info',
-  // ])
-
   async function fetchUserInfo() {
     const auth = getCookie('authorization')
     if (!auth) {
@@ -30,7 +24,7 @@ export function useFetchUserInfo() {
         },
       })
       const responseData = response.data
-
+      debugger
       if (!responseData.email) {
         router.push('/login')
         return

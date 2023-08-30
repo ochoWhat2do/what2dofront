@@ -87,10 +87,24 @@ const Profile = () => {
       )
 
       window.alert('프로필을 수정하였습니다.')
-      router.reload()
+      router.push('/')
     } catch (error: any) {
       window.alert(error.response.data.statusMessage)
       return
+    }
+  }
+
+  const deleteAccount = async () => {
+    try {
+      await axios.delete(`${otherHost}/api/users/info`, {
+        headers: {
+          Authorization: `Bearer ${auth}`,
+        },
+      })
+
+      router.push('/login')
+    } catch (error) {
+      console.error('Error deleting account:', error)
     }
   }
 
@@ -163,9 +177,17 @@ const Profile = () => {
             onChange={handleImageChange}
           />
         </div>
-        <button className={styles['profile-id-submit']} onClick={editProfile}>
-          수정
-        </button>
+        <div className={styles['profile-input-container']}>
+          <button className={styles['profile-id-submit']} onClick={editProfile}>
+            수정
+          </button>
+          <button
+            className={styles['profile-id-delete']}
+            onClick={deleteAccount}
+          >
+            회원 탈퇴
+          </button>
+        </div>
         <p>{message}</p>
       </div>
     </div>

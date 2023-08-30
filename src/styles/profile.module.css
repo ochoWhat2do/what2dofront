@@ -35,6 +35,16 @@
   cursor: pointer;
 }
 
+.profile-id-delete {
+  padding: 10px 20px;
+  background-color: #ffff00;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
 .profile-image-container {
   display: flex;
   align-items: center;
