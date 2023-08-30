@@ -1,18 +1,76 @@
-import React from "react";
-import Link from "next/link";
-import { useCookies } from "react-cookie"; // Import useCookies
-import styles from "./Header.module.css";
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { getCookie, setCookie, removeCookie } from '../../utils/cookie'
+import styles from './Header.module.css'
+import { useRouter } from 'next/router'
+import { useFetchUserInfo } from '../../utils/auth' // Import useFetchUserInfo from auth.ts
+
+interface UserInfo {
+  picture: string
+  email: string
+  nickname: string
+}
 
 const Header = () => {
-  const [cookies, , removeCookie] = useCookies(["authorization"]); // Use cookies and removeCookie
-  const router = useRouter();
+  const router = useRouter()
+  const [userPicture, setUserPicture] = useState<string>('') // State to hold user picture
+  const [isDataFetched, setIsDataFetched] = useState(false)
+  const fetchUserInfo = useFetchUserInfo()
+
+  const fetchUserInfoAndRender = async () => {
+    await fetchUserInfo()
+
+    const user_info = getCookie('user_info')
+    if (user_info && user_info.picture) {
+      setUserPicture(user_info.picture)
+    }
+
+    setIsDataFetched(true)
+  }
 
   const handleLogout = () => {
-    // Remove "authorization" cookie
-    removeCookie("authorization");
-    router.push("/");
-  };
+    removeCookie('authorization')
+    removeCookie('user_info')
+    router.push('/login')
+  }
+
+  const isAuthenticated = !!getCookie('authorization') // Convert to boolean
+  const [isClientSideRendered, setIsClientSideRendered] = useState(false)
+  useEffect(() => {
+    fetchUserInfoAndRender()
+    const user_info = getCookie('user_info')
+    if (user_info && user_info.picture) {
+      setUserPicture(user_info.picture)
+    }
+    setIsClientSideRendered(true)
+  }, [])
+
+  const authenticatedContent = isAuthenticated && isClientSideRendered && (
+    <li className={styles.navItem}>
+      <Link href="/profile">
+        <img
+          src={userPicture || '/images/ic-person.png'} // Use the state value here
+          alt="프로필 이미지"
+        />
+      </Link>
+    </li>
+  )
+
+  const authButtons = isAuthenticated ? (
+    <li className={styles.navItem}>
+      <button onClick={handleLogout}>로그아웃</button>
+    </li>
+  ) : (
+    <li className={styles.navItem}>
+      <Link href="/login">로그인</Link>
+    </li>
+  )
+
+  const signupLink = !isAuthenticated && (
+    <li className={styles.navItem}>
+      <Link href="/signup">회원가입</Link>
+    </li>
+  )
 
   return (
     <header className={styles.header}>
@@ -23,24 +81,17 @@ const Header = () => {
       </div>
       <nav className={styles.nav}>
         <ul>
-          {cookies.authorization ? ( // Check if "authorization" cookie exists
-            <li className={styles.navItem}>
-              <button onClick={handleLogout}>로그아웃</button>
-            </li>
-          ) : (
-            <li className={styles.navItem}>
-              <Link href="/login">로그인</Link>
-            </li>
-          )}
-          {!cookies.authorization && ( // Show signup link when not logged in
-            <li className={styles.navItem}>
-              <Link href="/signup">회원가입</Link>
-            </li>
+          {isClientSideRendered && (
+            <>
+              {authenticatedContent}
+              {authButtons}
+              {signupLink}
+            </>
           )}
         </ul>
       </nav>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

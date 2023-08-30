@@ -4,20 +4,36 @@
   align-items: center;
   justify-content: space-between;
   height: 80px;
-  padding: 0 20px; /* 좌우 여백을 20px로 설정 */
+  padding: 0 20px;
   background-color: #f0f0f0;
 }
 
-.logo img {
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logoImage {
   width: 100px;
+  height: auto;
 }
 
 .nav ul {
   list-style: none;
   display: flex;
-  gap: 20px; /* 로그인 버튼과 회원가입 버튼 사이의 간격을 20px로 설정 */
+  gap: 20px;
+  align-items: center; /* Align items vertically in the center */
 }
 
 .navItem {
-  margin-right: 100px; /* 오른쪽 여백을 100px로 설정 */
+  margin-right: 20px;
+}
+
+/* Add this style to align profile image and logout button in a row */
+.navItem img,
+.navItem button {
+  vertical-align: middle;
+}
+.navItem img {
+  height: 40px; /* Set the height to a value smaller than .header height */
 }
