@@ -87,7 +87,7 @@ const Signup = () => {
       )
 
       if (response.status === 200) {
-        setMessage('회원가입이 성공적으로 완료되었습니다.')
+        window.alert('회원가입이 성공적으로 완료되었습니다.')
         router.push('/login')
       }
     } catch (error) {

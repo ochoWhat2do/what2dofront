@@ -37,7 +37,12 @@ const Header = () => {
   const isAuthenticated = !!getCookie('authorization') // Convert to boolean
   const [isClientSideRendered, setIsClientSideRendered] = useState(false)
   useEffect(() => {
-    fetchUserInfoAndRender()
+    if (router.pathname !== '/signup' && router.pathname !== '/login') {
+      // Skip fetching user info on signup page
+      fetchUserInfoAndRender()
+    } else {
+      setIsDataFetched(true)
+    }
     const user_info = getCookie('user_info')
     if (user_info && user_info.picture) {
       setUserPicture(user_info.picture)
