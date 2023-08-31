@@ -10,16 +10,16 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
+  //backend 주소
+  const indexHost = 'http://localhost:8080' // 로컬
+  const devHost = 'http://localhost:8080' // 개발
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(
-        'http://localhost:8080/api/users/login',
-        {
-          email,
-          password,
-        },
-      )
+      const response = await axios.post(devHost + '/api/users/login', {
+        email,
+        password,
+      })
 
       if (response.status === 200) {
         setMessage('로그인이 성공적으로 완료되었습니다.')
