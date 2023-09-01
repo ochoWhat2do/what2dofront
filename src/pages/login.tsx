@@ -80,6 +80,17 @@ const Login = () => {
         </button>
         <p>{message}</p>
       </div>
+      {/* <div className="social-login">
+        <a className="btn btn-block social-btn google" href="#">
+          <img src="/images/google-logo.png" alt="Google" /> Sign in with Google
+        </a>
+        <a className="btn btn-block social-btn kakao" href="#">
+          <img src="/images/kakao-logo.png" alt="Kakao" /> Sign in with Kakao
+        </a>
+        <a className="btn btn-block social-btn kakao" href="#">
+          <img src="/images/naver-logo.png" alt="Naver" /> Sign in with Naver
+        </a>
+      </div> */}
     </div>
   )
 }
