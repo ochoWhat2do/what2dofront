@@ -98,7 +98,6 @@ export default function Home() {
           {/* 왼쪽 컨텐츠 영역 */}
           <div>
             <h2>가게 상세화면</h2>
-            {/* 가게 정보 */}
             {storeModel && (
               <div className={styles.storeItem}>
                 <img
@@ -123,7 +122,6 @@ export default function Home() {
                 </div>
               </div>
             )}
-            {/* 리뷰 */}
             <h2>리뷰</h2>
             <div className={styles.reviewContainer}>
               {reviewList.map((review) => (
