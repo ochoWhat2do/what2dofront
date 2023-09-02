@@ -90,6 +90,18 @@ export default function Home() {
     }
   }
 
+  const handleReviewClick = (reviewId: string) => {
+    // 이동할 경로를 생성하고 reviewId를 query parameter로 전달합니다.
+    const pathname = '../review/reviewDetail' // reviewDetail.tsx 파일 경로에 맞게 수정
+    const search = `1`
+
+    // 페이지 이동
+    router.push({
+      pathname,
+      search,
+    })
+  }
+
   return (
     <div>
       <Header />
@@ -125,7 +137,11 @@ export default function Home() {
             <h2>리뷰</h2>
             <div className={styles.reviewContainer}>
               {reviewList.map((review) => (
-                <div key={review.id} className={styles.reviewItem}>
+                <div
+                  key={review.id}
+                  className={styles.reviewItem}
+                  onClick={() => handleReviewClick('0')}
+                >
                   <h3 className={styles.reviewTitle}>{review.title}</h3>
                   <p className={styles.reviewContent}>{review.content}</p>
                   <p className={styles.reviewDate}>
