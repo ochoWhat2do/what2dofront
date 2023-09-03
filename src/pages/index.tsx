@@ -99,9 +99,25 @@ export default function Home() {
           Authorization: bearer + auth,
         },
       })
-
+      debugger
       console.log(response.data)
-      setStoreList(response.data) // Set the fetched data to the state
+      if (response.data) {
+        const formattedData = response.data.storeCategoryList.map(
+          (item: any) => ({
+            title: item.title,
+            homePageLink: item.homePageLink,
+            category: item.category,
+            address: item.address,
+            roadAddress: item.roadAddress,
+            latitude: item.latitude,
+            longitude: item.longitude,
+            picture: item.picture,
+            storeKey: item.storeKey,
+          }),
+        )
+
+        setStoreList(formattedData)
+      }
     } catch (error) {
       console.error('Error fetching profile:', error)
     }
@@ -166,7 +182,7 @@ export default function Home() {
                 </div>
               ))
             ) : (
-              <p>No results found.</p>
+              <p>검색된 가게가 없습니다.</p>
             )}
           </div>
         </div>
