@@ -1,0 +1,34 @@
+.index-container {
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center; /* 가로 가운데 정렬을 위한 스타일 추가 */
+}
+
+.searchBox {
+  display: flex; /* Flexbox 사용 */
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: center; /* 가로 가운데 정렬을 위한 스타일 추가 */
+  text-align: center;
+  padding: 40px;
+}
+
+.searchBox input {
+  border: 2px solid purple;
+  padding: 5px;
+  width: 400px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.searchBox button {
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.flex-store {
+  margin-left: 100px; /* 100px 왼쪽 마진 설정 */
+}

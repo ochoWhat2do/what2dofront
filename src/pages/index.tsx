@@ -3,6 +3,7 @@ import Header from './components/Header'
 import axios from 'axios'
 import { getCookie, setCookie } from '../utils/cookie'
 import { useRouter } from 'next/router'
+import styles from '../styles/index.module.css'
 
 interface Store {
   title: string
@@ -25,10 +26,12 @@ export default function Home() {
   const auth = getCookie('authorization')
   const query = '강남구' // Replace with the actual query
   const page = '1' // Replace with the actual page
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedOption, setSelectedOption] = useState('keyword') // 초기 선택값
 
   useEffect(() => {
     if (auth) {
-      getStoreList()
+      getStoreList(query)
     }
   }, [])
 
@@ -48,11 +51,48 @@ export default function Home() {
     }
   }
 
-  const getStoreList = async () => {
+  const getStoreList = async (searchQuery: string) => {
     try {
       const response = await axios.get(`${devHost}/api/daum/search`, {
         params: {
-          query: query,
+          query: searchQuery,
+          page: page,
+        },
+        headers: {
+          Authorization: bearer + auth,
+        },
+      })
+
+      console.log(response.data)
+      setStoreList(response.data) // Set the fetched data to the state
+    } catch (error) {
+      console.error('Error fetching profile:', error)
+    }
+  }
+
+  // 검색 버튼 클릭 시 처리 함수
+  const handleSearch = () => {
+    // 검색 쿼리에 대한 처리를 추가하세요.
+    console.log('검색어:', searchQuery)
+    if (!searchQuery) {
+      window.alert('검색어를 입력하세요.')
+      return
+    }
+
+    if (auth) {
+      if (selectedOption === 'keyword') {
+        getStoreList(searchQuery)
+      } else if (selectedOption === 'category') {
+        getStoreListByCategory(searchQuery)
+      }
+    }
+  }
+
+  const getStoreListByCategory = async (categoryQuery: string) => {
+    try {
+      const response = await axios.get(`${devHost}/api/stores/search`, {
+        params: {
+          category: categoryQuery,
           page: page,
         },
         headers: {
@@ -73,34 +113,61 @@ export default function Home() {
       <h1>홈 페이지</h1>
       <div>
         <h2>메인화면</h2>
-        <div className="container">
-          <div className="flex flex-wrap">
-            {storeList.map((store, index) => (
-              <div key={index} className="w-1/3">
-                {/* Adjusted class here */}
-                <section className="box feature">
-                  <img
-                    className="hover:cursor-pointer"
-                    src={store.picture || 'images/not_found_square.png'}
-                    alt=""
-                    onClick={() => handleViewStore(store.storeKey)}
-                  />
-                  <div className="inner">
-                    <input
-                      type="hidden"
-                      data-id={`list${index}`}
-                      value={store.storeKey}
+        <div className="index-container">
+          <div className={styles.searchBox}>
+            <select
+              value={selectedOption}
+              onChange={(e) => setSelectedOption(e.target.value)}
+              style={{ width: '120px', fontSize: '14px' }}
+            >
+              <option value="keyword">검색어</option>
+              <option value="category">카테고리</option>
+            </select>
+            <input
+              type="text"
+              placeholder="검색어를 입력하세요"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button onClick={handleSearch}>
+              <img
+                src="/images/ic-search.png"
+                alt="검색"
+                style={{ width: '40px', height: '40px' }}
+              />
+            </button>
+          </div>
+          <div className={`flex flex-wrap ${styles['flex-store']}`}>
+            {storeList.length > 0 ? (
+              storeList.map((store, index) => (
+                <div key={index} className="w-1/3">
+                  {/* Adjusted class here */}
+                  <section className="box feature">
+                    <img
+                      className="hover:cursor-pointer"
+                      src={store.picture || 'images/not_found_square.png'}
+                      alt=""
+                      onClick={() => handleViewStore(store.storeKey)}
                     />
-                    <header>
-                      <h2>{store.title}</h2>
-                    </header>
-                    <p>{store.category}</p>
-                    <br />
-                    <p>{store.address}</p>
-                  </div>
-                </section>
-              </div>
-            ))}
+                    <div className="inner">
+                      <input
+                        type="hidden"
+                        data-id={`list${index}`}
+                        value={store.storeKey}
+                      />
+                      <header>
+                        <h2>{store.title}</h2>
+                      </header>
+                      <p>{store.category}</p>
+                      <br />
+                      <p>{store.address}</p>
+                    </div>
+                  </section>
+                </div>
+              ))
+            ) : (
+              <p>No results found.</p>
+            )}
           </div>
         </div>
       </div>
