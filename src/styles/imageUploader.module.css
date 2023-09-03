@@ -1,0 +1,33 @@
+.addImgBtn {
+  width: 80px !important;
+  height: 80px !important;
+  line-height: 71px !important;
+  background-color: #fff !important;
+  color: #b7b7b7 !important;
+  border: 2px solid #b7b7b7;
+  font-size: 35px !important;
+  padding: 0 !important;
+  cursor: pointer; /* 추가: 커서 모양을 포인터로 변경 */
+}
+
+.imageFileContainer {
+  display: flex;
+}
+
+.imagePreviewList {
+  display: inline-flex;
+  flex-wrap: wrap; /* 이미지들이 넘칠 경우 다음 줄로 이동합니다. */
+  gap: 8px; /* 이미지 사이의 간격을 조절할 수 있습니다. */
+}
+
+.ImagePreview {
+  width: 140px !important;
+  height: auto;
+}
+
+.imageFile {
+  max-width: 100%; /* 이미지의 최대 너비를 100%로 설정하여 부모 너비를 넘지 않도록 합니다. */
+  height: auto; /* 이미지 높이를 자동으로 조정하여 원본 비율을 유지합니다. */
+  width: 140px; /* 원하는 너비 설정 (이 예제에서는 140px) */
+  height: 140px; /* 원하는 높이 설정 (이 예제에서는 140px) */
+}
