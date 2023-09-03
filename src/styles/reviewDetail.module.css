@@ -1,0 +1,85 @@
+/* reviewDetail.module.css */
+.container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.leftContent {
+  flex: 2; /* 왼쪽 컨텐츠 영역이 남은 공간을 모두 차지하도록 설정 */
+}
+
+.rightContent {
+  flex: 1; /* 오른쪽 컨텐츠 영역이 남은 공간을 모두 차지하도록 설정 */
+  padding: 20px; /* 내용과의 여백을 추가할 수 있습니다. */
+}
+
+.reviewItem {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reviewImage {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 8px;
+}
+
+.reviewInfo {
+  flex: 1;
+}
+
+.reviewTitle {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.reviewContent {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.reviewAddress,
+.reviewRoadAddress,
+.reviewHomePageLink {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* comment */
+.commentContainer {
+  display: flex;
+  flex-direction: column; /* 각 리뷰를 세로로 나열합니다. */
+  gap: 20px;
+}
+
+.commentItem {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%; /* 가로폭을 100%로 설정하여 한 줄에 하나의 리뷰만 표시합니다. */
+  box-sizing: border-box;
+}
+
+.commentContent {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.commentDate {
+  font-size: 12px;
+  color: #777;
+}
+
+.commentLikes {
+  font-size: 12px;
+  color: #777;
+}

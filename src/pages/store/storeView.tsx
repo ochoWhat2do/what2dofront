@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import Header from '../components/Header'
 import { getCookie, setCookie } from '../../utils/cookie'
 import styles from '../../styles/storeView.module.css'
+import Link from 'next/link'
 
 interface Store {
   id: number
@@ -89,16 +90,26 @@ export default function Home() {
       console.error('Error fetching 리뷰:', error)
     }
   }
+  const handleReviewSaveClick = (e: React.MouseEvent) => {
+    e.preventDefault() // 기본 이벤트(링크 이동) 방지
+    const storeId = storeModel?.id
 
-  const handleReviewClick = (reviewId: string) => {
-    // 이동할 경로를 생성하고 reviewId를 query parameter로 전달합니다.
-    const pathname = '../review/reviewDetail' // reviewDetail.tsx 파일 경로에 맞게 수정
-    const search = `1`
-
-    // 페이지 이동
+    // 페이지 이동 및 데이터 전달
     router.push({
-      pathname,
-      search,
+      pathname: '/review/reviewSave',
+      query: { storeId },
+    })
+  }
+
+  const handleReviewClick = (e: React.MouseEvent, reviewId: number) => {
+    e.preventDefault() // 기본 이벤트(링크 이동) 방지
+    const storeId = storeModel?.id
+    const reviewIdStr = reviewId.toString()
+
+    // 페이지 이동 및 데이터 전달
+    router.push({
+      pathname: '/review/reviewDetail',
+      query: { storeId, reviewId: reviewIdStr },
     })
   }
 
@@ -110,6 +121,17 @@ export default function Home() {
           {/* 왼쪽 컨텐츠 영역 */}
           <div>
             <h2>가게 상세화면</h2>
+            {storeModel && (
+              <div className={styles['review-input-container']}>
+                <button
+                  className={styles['review-id-submit']}
+                  onClick={(e) => handleReviewSaveClick(e)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  리뷰 등록
+                </button>
+              </div>
+            )}
             {storeModel && (
               <div className={styles.storeItem}>
                 <img
@@ -140,7 +162,8 @@ export default function Home() {
                 <div
                   key={review.id}
                   className={styles.reviewItem}
-                  onClick={() => handleReviewClick('0')}
+                  onClick={(e) => handleReviewClick(e, review.id)}
+                  style={{ cursor: 'pointer' }}
                 >
                   <h3 className={styles.reviewTitle}>{review.title}</h3>
                   <p className={styles.reviewContent}>{review.content}</p>

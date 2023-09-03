@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from '../components/Header'
 import { getCookie, setCookie } from '../../utils/cookie'
-import styles from '../../styles/reviewDetail.module.css'
+import styles from '../../styles/reviewSave.module.css'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -13,6 +13,7 @@ interface Review {
   createdAt: Date
   likeCount: number
   attachment: Attachment
+  rate: number
 }
 
 interface Attachment {
@@ -20,13 +21,6 @@ interface Attachment {
   uploadFileName: string
   uploadFilePath: string
   uploadFileUrl: string
-}
-
-interface Comment {
-  id: number
-  content: string
-  createdAt: Date
-  likeCount: number
 }
 
 const reviewDetailPage = () => {
@@ -39,6 +33,13 @@ const reviewDetailPage = () => {
   const auth = getCookie('authorization')
   const bearer = 'Bearer '
   const [commentList, setCommentList] = useState<Comment[]>([])
+
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [rate, setRate] = useState('')
+  const [selectedPicture, setselectedPicture] = useState<null | File>(
+    null as File | null,
+  )
 
   useEffect(() => {
     getReiview()
@@ -110,57 +111,67 @@ const reviewDetailPage = () => {
       <Header />
       <div className={styles.container}>
         <div className={styles.leftContent}>
-          {/* 왼쪽 컨텐츠 영역 */}
-          <div>
-            <h2>리뷰 상세화면</h2>
-            {reviewModel && (
-              <div className={styles.reviewItem}>
-                <img
-                  className={styles.reviewImage}
-                  src={
-                    reviewModel.attachment.uploadFileUrl ||
-                    '../images/not_found_square.png'
-                  }
-                  alt=""
-                />
-                <div className={styles.reviewInfo}>
-                  <h2 className={styles.reviewTitle}>{reviewModel.title}</h2>
-                  <p className={styles.reviewContent}>
-                    내용: {reviewModel.content}
-                  </p>
-                  <p className={styles.reviewDate}>
-                    작성일시 :{' '}
-                    {new Date(reviewModel.createdAt).toLocaleString()}
-                  </p>
-                  <p className={styles.reviewLikes}>
-                    좋아요: {reviewModel.likeCount}
-                  </p>
-                </div>
-              </div>
-            )}
-            <h2>댓글</h2>
-            <div className={styles.commentContainer}>
-              {commentList.length > 0 ? (
-                commentList.map((comment) => (
-                  <div key={comment.id} className={styles.reviewItem}>
-                    <p className={styles.commentContent}>{comment.content}</p>
-                    <p className={styles.commentDate}>
-                      Created At: {new Date(comment.createdAt).toLocaleString()}
-                    </p>
-                    <p className={styles.commentLikes}>
-                      좋아요: {comment.likeCount}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p>댓글이 없습니다.</p>
-              )}
-            </div>
+          <div className={styles['review-input-container']}>
+            <div className="review-id-label">제목</div>
+            <input
+              type="title"
+              name="title"
+              id="title"
+              className={styles['review-input-box']}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              readOnly
+            />
           </div>
-        </div>
-        {/* 오른쪽 컨텐츠 영역 */}
-        <div className={styles.rightContent}>
-          {/* 별도의 컨텐츠를 추가하세요 */}
+          <div className={styles['review-input-container']}>
+            <div className="review-id-label">내용</div>
+            <input
+              type="text"
+              name="content"
+              id="content"
+              className={styles['review-input-box']}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+          </div>
+          <div className={styles['review-input-container']}>
+            <div className="review-id-label">평점</div>
+            <input
+              type="text"
+              name="rate"
+              id="rate"
+              className={styles['review-input-box']}
+              value={rate}
+              onChange={(e) => setRate(e.target.value)}
+            />
+          </div>
+          <div className={styles['review-input-container']}>
+            <div className="review-id-label">프로필 사진</div>
+            {/* <div className={styles['review-image-container']}>
+            <img
+              src={picture || '/images/ic-person.png'}
+              alt="프로필 사진"
+              className={`${styles['review-image']} ${styles['rounded']}`}
+            />
+          </div>
+          <input
+            type="file"
+            id="review-pic"
+            name="profilePic"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+        </div> */}
+            <div className={styles['review-input-container']}>
+              <button className={styles['review-id-submit']}>등록</button>
+              <button className={styles['review-id-cancel']}>취소</button>
+            </div>
+            <p>{message}</p>
+          </div>
+          {/* 오른쪽 컨텐츠 영역 */}
+          <div className={styles.rightContent}>
+            {/* 별도의 컨텐츠를 추가하세요 */}
+          </div>
         </div>
       </div>
     </div>
