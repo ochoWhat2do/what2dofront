@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from '../components/Header'
 import { getCookie, setCookie } from '../../utils/cookie'
-import styles from '../../styles/reviewSave.module.css'
+import styles from '../../styles/reviewEdit.module.css'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -13,11 +13,11 @@ interface Review {
   content: string
   createdAt: Date
   likeCount: number
-  attachment: Attachment
   rate: number
+  attachment: S3FileDto[]
 }
 
-interface Attachment {
+interface S3FileDto {
   originalFileName: string
   uploadFileName: string
   uploadFilePath: string
@@ -39,18 +39,43 @@ const reviewDetailPage = () => {
   const [rate, setRate] = useState('')
   const [selectedPictures, setSelectedPictures] = useState<File[] | null>(null)
 
+  useEffect(() => {
+    getReiview()
+  }, [])
+
+  const getReiview = async () => {
+    try {
+      const response = await axios.get(
+        `${devHost}/api/stores/${storeId}/reviews/${reviewId}`,
+        {
+          headers: {
+            Authorization: bearer + auth,
+          },
+        },
+      )
+      const { title, content, rate } = response.data // 받아온 데이터에서 필요한 값을 추출
+      setTitle(title)
+      setContent(content)
+      setRate(rate)
+
+      setReviewModel(response.data) // Set the fetched data to the state
+    } catch (error) {
+      console.error('Error fetching store:', error)
+    }
+  }
+
   const handleImagesSelected = (files: File[]) => {
     setSelectedPictures(files) // 이미지 목록을 받아와 setSelectedPictures를 호출하여 selectedPictures를 업데이트
   }
 
-  const handleSaveReview = () => {
-    const shouldSave = window.confirm('리뷰를 등록하시겠습니까?')
+  const handleEditReview = () => {
+    const shouldSave = window.confirm('리뷰를 수정하시겠습니까?')
     if (shouldSave) {
-      saveReview()
+      editReview()
     }
   }
 
-  const saveReview = async () => {
+  const editReview = async () => {
     try {
       const formData = new FormData()
 
@@ -60,7 +85,7 @@ const reviewDetailPage = () => {
           // selectedPictures.forEach 루프를 사용하여 각 파일을 FormData에 추가하고 각 파일을 files[0], files[1], files[2], ...와 같이 인덱스를 사용하여 고유한 이름으로 저장
         })
       }
-      debugger
+
       const jsonBody = {
         title: title,
         content: content,
@@ -74,8 +99,8 @@ const reviewDetailPage = () => {
         }),
       )
 
-      const response = await axios.post(
-        `${devHost}/api/stores/${storeId}/reviews`,
+      const response = await axios.put(
+        `${devHost}/api/stores/${storeId}/reviews/${reviewId}`,
         formData,
         {
           headers: {
@@ -85,7 +110,7 @@ const reviewDetailPage = () => {
         },
       )
 
-      window.alert('리뷰를 등록하였습니다.')
+      window.alert('리뷰를 수정하였습니다.')
       router.back()
     } catch (error: any) {
       window.alert(error.response.data.statusMessage)
@@ -102,7 +127,7 @@ const reviewDetailPage = () => {
       <Header />
       <div className={styles['review-form']}>
         {' '}
-        <div className={styles['review-title']}>리뷰 작성</div>
+        <div className={styles['review-title']}>리뷰 수정하기</div>
         <div className={styles['review-input-container']}>
           <div className="review-id-label">제목</div>
           <input
@@ -110,7 +135,7 @@ const reviewDetailPage = () => {
             name="title"
             id="title"
             className={styles['review-input-box']}
-            value={title}
+            value={reviewModel?.title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
@@ -120,7 +145,7 @@ const reviewDetailPage = () => {
             name="content"
             id="content"
             className={styles['review-text-box']}
-            value={content}
+            value={reviewModel?.content}
             onChange={(e) => setContent(e.target.value)}
             rows={8}
           />
@@ -132,7 +157,7 @@ const reviewDetailPage = () => {
             name="rate"
             id="rate"
             className={styles['review-input-number-box']}
-            value={rate}
+            value={reviewModel?.rate}
             onChange={(e) => setRate(e.target.value)}
           />
         </div>
@@ -140,17 +165,16 @@ const reviewDetailPage = () => {
           <div className="review-id-label">이미지 첨부</div>
           <ImageUploader
             onImagesSelected={handleImagesSelected}
-            initialImages={[]}
+            initialImages={reviewModel?.attachment || []}
           />
-          {/* initialImages를 빈 배열 []로 설정하면, ImageUploader 컴포넌트 내에서 initialImages가 빈 배열로 처리 */}
           {/* onImagesSelected 콜백 전달 */}
         </div>
         <div className={styles['review-input-container']}>
           <button
             className={styles['review-id-submit']}
-            onClick={handleSaveReview}
+            onClick={handleEditReview}
           >
-            등록
+            수정
           </button>
           <button className={styles['review-id-delete']} onClick={handleGoBack}>
             취소

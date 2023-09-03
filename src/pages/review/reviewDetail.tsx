@@ -12,10 +12,10 @@ interface Review {
   content: string
   createdAt: Date
   likeCount: number
-  attachment: Attachment
+  attachment: S3FileDto[]
 }
 
-interface Attachment {
+interface S3FileDto {
   originalFileName: string
   uploadFileName: string
   uploadFilePath: string
@@ -93,16 +93,38 @@ const reviewDetailPage = () => {
     }
   }
 
-  const handleReviewClick = (reviewId: string) => {
-    // 이동할 경로를 생성하고 reviewId를 query parameter로 전달합니다.
-    const pathname = '../review/reviewDetail' // reviewDetail.tsx 파일 경로에 맞게 수정
-    const search = `1`
+  const handleReviewEditClick = (e: React.MouseEvent) => {
+    e.preventDefault() // 기본 이벤트(링크 이동) 방지
 
-    // 페이지 이동
+    // 페이지 이동 및 데이터 전달
     router.push({
-      pathname,
-      search,
+      pathname: '/review/reviewEdit',
+      query: { storeId: storeId, reviewId: reviewId },
     })
+  }
+
+  const handleDeleteReview = () => {
+    const shouldSave = window.confirm('리뷰를 삭제하시겠습니까?')
+    if (shouldSave) {
+      deleteReview()
+    }
+  }
+
+  const deleteReview = async () => {
+    try {
+      await axios.delete(
+        `${devHost}/api/stores/${storeId}/reviews/${reviewId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth}`,
+          },
+        },
+      )
+      window.alert('리뷰를 삭제 하였습니다.')
+      router.push('/')
+    } catch (error: any) {
+      window.alert(error.response.data.statusMessage)
+    }
   }
 
   return (
@@ -115,14 +137,19 @@ const reviewDetailPage = () => {
             <h2>리뷰 상세화면</h2>
             {reviewModel && (
               <div className={styles.reviewItem}>
-                <img
-                  className={styles.reviewImage}
-                  src={
-                    reviewModel.attachment.uploadFileUrl ||
-                    '../images/not_found_square.png'
-                  }
-                  alt=""
-                />
+                {/* 이미지 태그를 attachment의 개수에 따라 생성 */}
+                {reviewModel.attachment &&
+                  reviewModel.attachment.map((fileDto, index) => (
+                    <img
+                      key={index}
+                      className={styles.reviewImage}
+                      src={
+                        fileDto.uploadFileUrl ||
+                        '../images/not_found_square.png'
+                      }
+                      alt={`Image ${index}`}
+                    />
+                  ))}
                 <div className={styles.reviewInfo}>
                   <h2 className={styles.reviewTitle}>{reviewModel.title}</h2>
                   <p className={styles.reviewContent}>
@@ -135,6 +162,20 @@ const reviewDetailPage = () => {
                   <p className={styles.reviewLikes}>
                     좋아요: {reviewModel.likeCount}
                   </p>
+                </div>
+                <div className={styles['review-button-container']}>
+                  <button
+                    className={styles['review-id-move']}
+                    onClick={(e) => handleReviewEditClick(e)}
+                  >
+                    수정
+                  </button>
+                  <button
+                    className={styles['review-id-delete']}
+                    onClick={handleDeleteReview}
+                  >
+                    삭제
+                  </button>
                 </div>
               </div>
             )}

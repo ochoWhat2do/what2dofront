@@ -122,7 +122,7 @@ export default function Home() {
           <div>
             <h2>가게 상세화면</h2>
             {storeModel && (
-              <div className={styles['review-input-container']}>
+              <div className={styles['review-button-container']}>
                 <button
                   className={styles['review-id-submit']}
                   onClick={(e) => handleReviewSaveClick(e)}
