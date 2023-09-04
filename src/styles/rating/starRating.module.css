@@ -1,0 +1,7 @@
+.starList {
+  display: flex;
+}
+
+.starList button {
+  fill: grey;
+}
