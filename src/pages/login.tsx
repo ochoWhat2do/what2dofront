@@ -4,6 +4,7 @@ import Header from './components/Header'
 import { setCookie } from '../utils/cookie'
 import { useRouter } from 'next/router'
 import styles from '../styles/login.module.css' // Import login.module.css
+import { KAKAO } from '../variables/common'
 
 const Login = () => {
   const router = useRouter()
@@ -13,6 +14,18 @@ const Login = () => {
   //backend 주소
   const indexHost = 'http://localhost:8080' // 로컬
   const devHost = 'http://localhost:8080' // 개발
+
+  // 카카오 로그인 시작
+  const handleKakaoLogin = async () => {
+    try {
+      // 카카오 로그인 페이지로 리다이렉트
+      const client_id = KAKAO.CLIENT_ID
+      const redirect_uri = KAKAO.REDIRECT_URI
+      window.location.href = `${KAKAO.LOGIN_URL}?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`
+    } catch (error) {
+      setMessage('로그인 중 오류가 발생했습니다.')
+    }
+  }
 
   const handleLogin = async () => {
     try {
@@ -80,17 +93,32 @@ const Login = () => {
         </button>
         <p>{message}</p>
       </div>
-      {/* <div className="social-login">
-        <a className="btn btn-block social-btn google" href="#">
-          <img src="/images/google-logo.png" alt="Google" /> Sign in with Google
-        </a>
-        <a className="btn btn-block social-btn kakao" href="#">
-          <img src="/images/kakao-logo.png" alt="Kakao" /> Sign in with Kakao
-        </a>
-        <a className="btn btn-block social-btn kakao" href="#">
-          <img src="/images/naver-logo.png" alt="Naver" /> Sign in with Naver
-        </a>
-      </div> */}
+      <div className={styles['social-login']}>
+        <button onClick={handleKakaoLogin}>
+          <img
+            className={styles['kakao-logo']}
+            src="/images/kakao-logo.png"
+            alt="Kakao"
+          />{' '}
+          Kakao 로그인
+        </button>
+      </div>
+      {/* <a className="btn btn-block social-btn google" href="#">
+          <img
+            className="google-logo"
+            src="/images/google-logo.png"
+            alt="Google"
+          />{' '}
+          Sign in with Google
+        </a> */}
+      {/* <a className="btn btn-block social-btn naver" href="#">
+          <img
+            className="naver-logo"
+            src="/images/naver-logo.png"
+            alt="Naver"
+          />{' '}
+          Sign in with Naver
+        </a> */}
     </div>
   )
 }
