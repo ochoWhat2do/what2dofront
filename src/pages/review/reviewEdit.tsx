@@ -135,7 +135,6 @@ const reviewDetailPage = () => {
             name="title"
             id="title"
             className={styles['review-input-box']}
-            value={reviewModel?.title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>

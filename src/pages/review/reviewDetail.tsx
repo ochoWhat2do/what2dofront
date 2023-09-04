@@ -39,6 +39,7 @@ const reviewDetailPage = () => {
   const auth = getCookie('authorization')
   const bearer = 'Bearer '
   const [commentList, setCommentList] = useState<Comment[]>([])
+  const [reviewLikeCount, setReviewLikeCount] = useState('')
 
   useEffect(() => {
     getReiview()
@@ -55,6 +56,7 @@ const reviewDetailPage = () => {
         },
       )
       setReviewModel(response.data) // Set the fetched data to the state
+      setReviewLikeCount(response.data.likeCount)
     } catch (error) {
       console.error('Error fetching store:', error)
     }
@@ -127,6 +129,26 @@ const reviewDetailPage = () => {
     }
   }
 
+  const handleLikeClick = async () => {
+    try {
+      // 좋아요 요청 보내기
+      const response = await axios.post(
+        `${devHost}/api/stores/${storeId}/reviews/${reviewId}/likes`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth}`,
+          },
+        },
+      )
+      if (response.data.liked) {
+        setReviewLikeCount(reviewLikeCount + 1)
+      }
+    } catch (error) {
+      // 오류 처리
+      console.error('좋아요 요청 실패:', error)
+    }
+  }
+
   return (
     <div>
       <Header />
@@ -163,10 +185,18 @@ const reviewDetailPage = () => {
                     <span className={styles.label}>작성일시:</span>{' '}
                     {new Date(reviewModel.createdAt).toLocaleString()}
                   </p>
-                  <p className={`${styles.reviewLikes} ${styles.label}`}>
-                    <span className={styles.label}>좋아요:</span>{' '}
-                    {reviewModel.likeCount}
-                  </p>
+                  <div onClick={handleLikeClick} className={styles.reviewLikes}>
+                    <img src="/images/ic-like.png" alt="좋아요 아이콘" />
+                    <input
+                      type="text"
+                      name="rate"
+                      id="rate"
+                      className={styles['review-input-like-box']}
+                      value={reviewLikeCount}
+                      onChange={(e) => setReviewLikeCount(e.target.value)}
+                      readOnly
+                    />
+                  </div>
                 </div>
                 <div className={styles['review-button-container']}>
                   <button

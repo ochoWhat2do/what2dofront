@@ -60,7 +60,7 @@ const reviewDetailPage = () => {
           // selectedPictures.forEach 루프를 사용하여 각 파일을 FormData에 추가하고 각 파일을 files[0], files[1], files[2], ...와 같이 인덱스를 사용하여 고유한 이름으로 저장
         })
       }
-      debugger
+
       const jsonBody = {
         title: title,
         content: content,
