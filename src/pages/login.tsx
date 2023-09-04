@@ -35,7 +35,7 @@ const Login = () => {
       })
 
       if (response.status === 200) {
-        setMessage('로그인이 성공적으로 완료되었습니다.')
+        window.alert('로그인에 성공하였습니다.')
         // Save tokens in cookies
         setCookie('authorization', response.headers['authorization'], {
           path: '/',
@@ -54,8 +54,8 @@ const Login = () => {
 
         router.push('/')
       }
-    } catch (error) {
-      setMessage('로그인 중 오류가 발생했습니다.')
+    } catch (error: any) {
+      window.alert('로그인에 실패하였습니다. 다시 시도해주세요.')
     }
   }
 

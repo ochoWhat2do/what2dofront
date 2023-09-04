@@ -160,7 +160,6 @@ export default function Home() {
                   {/* Adjusted class here */}
                   <section className="box feature">
                     <img
-                      className="hover:cursor-pointer"
                       src={store.picture || 'images/not_found_square.png'}
                       alt=""
                       onClick={() => handleViewStore(store.storeKey)}
