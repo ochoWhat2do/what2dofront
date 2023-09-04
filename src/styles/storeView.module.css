@@ -88,8 +88,12 @@
   color: #777;
 }
 
+.div-container {
+  display: flex;
+}
+
 .review-button-container {
-  margin-left: 1100px;
+  margin-left: 800px;
   margin-bottom: 15px;
 }
 
