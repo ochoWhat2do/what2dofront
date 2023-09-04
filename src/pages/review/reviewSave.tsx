@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import ImageUploader from '../../utils/imageUploader'
+import StarRating from '../../utils/starRating'
 
 interface Review {
   id: number
@@ -36,7 +37,7 @@ const reviewDetailPage = () => {
 
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [rate, setRate] = useState('')
+  const [rate, setRate] = useState(0) // rate 상태를 부모 컴포넌트에서 관리
   const [selectedPictures, setSelectedPictures] = useState<File[] | null>(null)
 
   const handleImagesSelected = (files: File[]) => {
@@ -48,6 +49,10 @@ const reviewDetailPage = () => {
     if (shouldSave) {
       saveReview()
     }
+  }
+  const handleRateChange = (newRate: number) => {
+    debugger
+    setRate(newRate) // 선택한 별점을 rate 상태로 업데이트
   }
 
   const saveReview = async () => {
@@ -127,14 +132,8 @@ const reviewDetailPage = () => {
         </div>
         <div className={styles['review-input-container']}>
           <div className="review-id-label">별점</div>
-          <input
-            type="text"
-            name="rate"
-            id="rate"
-            className={styles['review-input-number-box']}
-            value={rate}
-            onChange={(e) => setRate(e.target.value)}
-          />
+          {/* 별점 컴포넌트 추가 */}
+          <StarRating size={20} rate={rate} onRateChange={handleRateChange} />
         </div>
         <div className={styles['review-input-container']}>
           <div className="review-id-label">이미지 첨부</div>
