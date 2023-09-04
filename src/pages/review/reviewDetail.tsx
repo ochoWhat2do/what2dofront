@@ -151,16 +151,21 @@ const reviewDetailPage = () => {
                     />
                   ))}
                 <div className={styles.reviewInfo}>
-                  <h2 className={styles.reviewTitle}>{reviewModel.title}</h2>
-                  <p className={styles.reviewContent}>
-                    내용: {reviewModel.content}
+                  <h2 className={styles.reviewTitle}>
+                    <span className={styles.label}>제목:</span>{' '}
+                    {reviewModel.title}
+                  </h2>
+                  <p className={`${styles.reviewContent} ${styles.label}`}>
+                    <span className={styles.label}>내용:</span>{' '}
+                    {reviewModel.content}
                   </p>
-                  <p className={styles.reviewDate}>
-                    작성일시 :{' '}
+                  <p className={`${styles.reviewDate} ${styles.label}`}>
+                    <span className={styles.label}>작성일시:</span>{' '}
                     {new Date(reviewModel.createdAt).toLocaleString()}
                   </p>
-                  <p className={styles.reviewLikes}>
-                    좋아요: {reviewModel.likeCount}
+                  <p className={`${styles.reviewLikes} ${styles.label}`}>
+                    <span className={styles.label}>좋아요:</span>{' '}
+                    {reviewModel.likeCount}
                   </p>
                 </div>
                 <div className={styles['review-button-container']}>
