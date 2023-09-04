@@ -79,12 +79,11 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <input type="checkbox" id="menuToggle" className={styles.menuToggle} />
-      <label htmlFor="menuToggle" className={styles.menuIcon}>
-        <span></span>
-        <span></span>
-        <span></span>
-      </label>
+      <div className={styles.logo}>
+        <Link href="/">
+          <img src="/images/what2do_logo.png" alt="로고 이미지" width="120" />
+        </Link>
+      </div>
       <nav className={styles.nav}>
         <ul>
           {isClientSideRendered && (
@@ -92,15 +91,6 @@ const Header = () => {
               {authenticatedContent}
               {authButtons}
               {signupLink}
-              <li>
-                <a href="/">home</a>
-              </li>
-              <li>
-                <a href="/storeView">나의 store</a>
-              </li>
-              <li>
-                <a href="/reviewView">나의 review</a>
-              </li>
             </>
           )}
         </ul>
