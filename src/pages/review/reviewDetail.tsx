@@ -39,7 +39,12 @@ const reviewDetailPage = () => {
   const auth = getCookie('authorization')
   const bearer = 'Bearer '
   const [commentList, setCommentList] = useState<Comment[]>([])
+  const [commentContent, setCommentContent] = useState('')
+  const [updateCommnetContent, setUpdateCommentContent] = useState('')
   const [reviewLikeCount, setReviewLikeCount] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  // 상태를 관리할 수 있는 새로운 state 추가
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
 
   useEffect(() => {
     getReiview()
@@ -95,6 +100,45 @@ const reviewDetailPage = () => {
     }
   }
 
+  const handleSubmitComment = async () => {
+    if (commentContent.trim() === '') {
+      // 댓글이 비어있으면 저장하지 않음
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      const requestDto = {
+        content: commentContent,
+      }
+
+      await axios.post(
+        `${devHost}/api/stores/${storeId}/reviews/${reviewId}/comments`,
+        requestDto,
+        {
+          headers: {
+            Authorization: `Bearer ${auth}`,
+          },
+        },
+      )
+
+      // 댓글 저장 성공 시 여기에 추가 로직 작성 가능
+
+      // 댓글 입력 필드 초기화
+      setCommentContent('')
+
+      // 저장 완료 후 상태 변경
+      setIsSubmitting(false)
+      // 댓글 저장 후 댓글 목록 다시 조회
+      getComments()
+    } catch (error) {
+      // 오류 처리
+      console.error('Error saving comment:', error)
+      setIsSubmitting(false)
+    }
+  }
+
   const handleReviewEditClick = (e: React.MouseEvent) => {
     e.preventDefault() // 기본 이벤트(링크 이동) 방지
 
@@ -146,6 +190,57 @@ const reviewDetailPage = () => {
     } catch (error) {
       // 오류 처리
       console.error('좋아요 요청 실패:', error)
+    }
+  }
+
+  // 댓글 수정 함수
+  const updateComment = async (commentId: number) => {
+    try {
+      // 수정된 댓글 내용을 서버로 전송
+      const updatedComment = commentList.find(
+        (comment) => comment.id === commentId,
+      )
+      if (!updatedComment) return
+
+      await axios.put(
+        `${devHost}/api/stores/${storeId}/reviews/${reviewId}/comments/${commentId}`,
+        { content: updateCommnetContent },
+        {
+          headers: {
+            Authorization: `Bearer ${auth}`,
+          },
+        },
+      )
+
+      // 수정 모드 종료
+      setEditingCommentId(null)
+      // 댓글 저장 후 댓글 목록 다시 조회
+      getComments()
+    } catch (error) {
+      // 오류 처리
+      console.error('Error saving comment:', error)
+    }
+  }
+
+  // 댓글 삭제 함수
+  const deleteComment = async (commentId: number) => {
+    try {
+      await axios.delete(
+        `${devHost}/api/stores/${storeId}/reviews/${reviewId}/comments/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth}`,
+          },
+        },
+      )
+      window.alert('댓글을 삭제 하였습니다.')
+      // 댓글 삭제 후, 화면에서 해당 댓글 제거
+      const updatedCommentList = commentList.filter(
+        (comment) => comment.id !== commentId,
+      )
+      setCommentList(updatedCommentList)
+    } catch (error: any) {
+      window.alert(error.response.data.statusMessage)
     }
   }
 
@@ -215,17 +310,74 @@ const reviewDetailPage = () => {
               </div>
             )}
             <h2>댓글</h2>
+            <div className={styles.comment_editor}>
+              <textarea
+                placeholder="댓글을 입력하세요..."
+                value={commentContent}
+                className={styles.comment_text_area}
+                onChange={(e) => setCommentContent(e.target.value)}
+              ></textarea>
+              <button
+                onClick={handleSubmitComment}
+                disabled={isSubmitting}
+                className={styles['comment-id-submit']}
+              >
+                저장
+              </button>
+            </div>
             <div className={styles.commentContainer}>
               {commentList.length > 0 ? (
                 commentList.map((comment) => (
-                  <div key={comment.id} className={styles.reviewItem}>
-                    <p className={styles.commentContent}>{comment.content}</p>
-                    <p className={styles.commentDate}>
-                      Created At: {new Date(comment.createdAt).toLocaleString()}
-                    </p>
-                    <p className={styles.commentLikes}>
-                      좋아요: {comment.likeCount}
-                    </p>
+                  <div key={comment.id} className={styles.commentItem}>
+                    <div className={styles.commentLeftContainer}>
+                      {/* 수정 중인 댓글인지 확인하고, input 상자 또는 텍스트로 렌더링 */}
+                      {editingCommentId === comment.id ? (
+                        <input
+                          type="text"
+                          className={styles.commentContentInput}
+                          value={updateCommnetContent} // updateCommnetContent 사용
+                          onChange={(e) =>
+                            setUpdateCommentContent(e.target.value)
+                          }
+                        />
+                      ) : (
+                        <p className={styles.commentContent}>
+                          {comment.content}
+                        </p>
+                      )}
+                      <p className={styles.commentDate}>
+                        Created At:{' '}
+                        {new Date(comment.createdAt).toLocaleString()}
+                      </p>
+                      <p className={styles.commentLikes}>
+                        좋아요: {comment.likeCount}
+                      </p>
+                    </div>
+                    <div className={styles.commentRightContainer}>
+                      {/* 'ic-edit' 이미지를 클릭하면 수정 가능한 input 상자로 변경 */}
+                      {editingCommentId === comment.id ? (
+                        <button
+                          className={styles['comment-id-update']}
+                          onClick={() => updateComment(comment.id)}
+                        >
+                          수정
+                        </button>
+                      ) : (
+                        <img
+                          className={styles['comment-edit-img']}
+                          src="/images/ic-edit.png"
+                          alt="수정"
+                          onClick={() => setEditingCommentId(comment.id)}
+                        />
+                      )}
+                      {/* 'ic-delete' 이미지를 클릭하면 댓글 삭제 */}
+                      <img
+                        className={styles['comment-del-img']}
+                        src="/images/ic-delete.png"
+                        alt="삭제"
+                        onClick={() => deleteComment(comment.id)}
+                      />
+                    </div>
                   </div>
                 ))
               ) : (
