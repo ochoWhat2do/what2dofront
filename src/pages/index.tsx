@@ -64,7 +64,7 @@ export default function Home() {
       })
 
       console.log(response.data)
-      setStoreList(response.data) // Set the fetched data to the state
+      setStoreList(response.data.storeList) // Set the fetched data to the state
     } catch (error) {
       console.error('Error fetching profile:', error)
     }

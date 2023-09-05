@@ -108,6 +108,11 @@ const Profile = () => {
   }
 
   const deleteAccount = async () => {
+    if (!password) {
+      window.alert('비밀번호를 입력하세요.')
+      return
+    }
+
     try {
       const withdrawalData = {
         password: password, // Add the password value
