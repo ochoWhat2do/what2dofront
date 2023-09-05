@@ -99,7 +99,7 @@ export default function Home() {
           Authorization: bearer + auth,
         },
       })
-      debugger
+
       console.log(response.data)
       if (response.data) {
         const formattedData = response.data.storeCategoryList.map(
