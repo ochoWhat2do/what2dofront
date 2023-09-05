@@ -51,14 +51,12 @@ const reviewDetailPage = () => {
     }
   }
   const handleRateChange = (newRate: number) => {
-    debugger
     setRate(newRate) // 선택한 별점을 rate 상태로 업데이트
   }
 
   const saveReview = async () => {
     try {
       const formData = new FormData()
-
       if (selectedPictures) {
         selectedPictures.forEach((file, index) => {
           formData.append('files', file)

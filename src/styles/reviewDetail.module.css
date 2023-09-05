@@ -41,6 +41,11 @@
   margin-bottom: 10px;
 }
 
+.reviewCreateUserEmail {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
 .reviewContent {
   font-size: 16px;
   margin-bottom: 5px;
@@ -61,10 +66,18 @@
   outline: none; /* 포커스 효과 없애기 (선택적) */
 }
 
-/* 카카오 로고 스타일 */
 .reviewLikes img {
   width: 40px;
   height: 40px;
+}
+
+.reviewLikes {
+  width: 60px;
+  transition: border 0.3s; /* 테두리 전환 효과를 추가합니다. */
+}
+
+.blueBorder {
+  border: 1px solid blue;
 }
 
 /* comment */
