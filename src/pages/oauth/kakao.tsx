@@ -12,12 +12,10 @@ const Kakao = () => {
   const handleKakaoCallback = async (code: string | string[] | undefined) => {
     try {
       if (code) {
-        debugger
         // 카카오 서버로부터 액세스 토큰 요청
         const response = await axios.post(`${devHost}/oauth/kakao?code=${code}`)
 
         if (response.status === 200) {
-          debugger
           // 엑세스 토큰과 리프레시 토큰을 받았다
           if (response.headers['authorization']) {
             setCookie('authorization', response.headers['authorization'], {
