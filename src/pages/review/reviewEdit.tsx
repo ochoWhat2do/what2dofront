@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import ImageUploader from '../../utils/imageUploader'
+import StarRating from '../../utils/starRating'
 
 interface Review {
   id: number
@@ -36,7 +37,7 @@ const reviewDetailPage = () => {
 
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [rate, setRate] = useState('')
+  const [rate, setRate] = useState(0)
   const [selectedPictures, setSelectedPictures] = useState<File[] | null>(null)
 
   useEffect(() => {
@@ -56,8 +57,7 @@ const reviewDetailPage = () => {
       const { title, content, rate } = response.data // 받아온 데이터에서 필요한 값을 추출
       setTitle(title)
       setContent(content)
-      setRate(rate)
-
+      setRate(Number(rate))
       setReviewModel(response.data) // Set the fetched data to the state
     } catch (error) {
       console.error('Error fetching store:', error)
@@ -134,8 +134,8 @@ const reviewDetailPage = () => {
             type="text"
             name="title"
             id="title"
+            value={title}
             className={styles['review-input-box']}
-            value={reviewModel?.title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
@@ -145,20 +145,18 @@ const reviewDetailPage = () => {
             name="content"
             id="content"
             className={styles['review-text-box']}
-            value={reviewModel?.content}
+            value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={8}
           />
         </div>
         <div className={styles['review-input-container']}>
           <div className="review-id-label">별점</div>
-          <input
-            type="text"
-            name="rate"
-            id="rate"
-            className={styles['review-input-number-box']}
-            value={reviewModel?.rate}
-            onChange={(e) => setRate(e.target.value)}
+          {/* StarRating 컴포넌트에 rate 값을 전달 */}
+          <StarRating
+            size={20}
+            rate={reviewModel?.rate ?? 0} // rate 값을 숫자로 변환해서 전달
+            onRateChange={(newRate) => setRate(newRate)} // rate가 변경될 때 state 업데이트
           />
         </div>
         <div className={styles['review-input-container']}>
