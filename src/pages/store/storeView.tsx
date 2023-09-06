@@ -25,6 +25,7 @@ interface Review {
   createdAt: Date
   likeCount: number
   createEmail: string
+  rate: number
   // 기타 리뷰 객체의 필드들을 여기에 추가합니다.
 }
 
@@ -167,6 +168,9 @@ export default function Home() {
                   style={{ cursor: 'pointer' }}
                 >
                   <h3 className={styles.reviewTitle}>{review.title}</h3>
+                  <p className={`${styles.reviewRate} ${styles.rate}`}>
+                    <span className={styles.rate}>별점:</span> {review.rate}
+                  </p>
                   <p className={`${styles.reviewcreateEmail} ${styles.label}`}>
                     <span className={styles.label}>작성자:</span>{' '}
                     {review.createEmail}
