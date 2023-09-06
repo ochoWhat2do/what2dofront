@@ -1,0 +1,113 @@
+.h2 {
+  font-size: 25px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.container {
+  padding: 20px;
+  border: 2px solid #ffc0cb;
+  border-radius: 15px;
+  margin: 20px;
+}
+
+/* review */
+.nameBox {
+  width: 100px;
+  height: 24px;
+  border-radius: 15px;
+  background-color: pink;
+  text-align: center; /* 가운데 정렬 */
+  font-weight: bold; /* 글자 굵게 설정 */
+  margin-bottom: 20px;
+}
+
+.reviewContainer {
+  display: flex;
+  flex-direction: column; /* 각 리뷰를 세로로 나열합니다. */
+  gap: 20px;
+}
+
+.reviewItem {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.reviewTitle {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.reviewContent {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.reviewDate {
+  font-size: 12px;
+  color: #777;
+}
+
+.reviewLikes {
+  font-size: 12px;
+  color: #777;
+}
+
+.div-container {
+  display: flex;
+}
+
+/* store */
+
+.nameBox2 {
+  width: 140px;
+  height: 24px;
+  border-radius: 15px;
+  background-color: pink;
+  text-align: center; /* 가운데 정렬 */
+  font-weight: bold; /* 글자 굵게 설정 */
+  margin-bottom: 20px;
+  margin-top: 40px;
+}
+
+.storeContainer {
+  display: flex;
+  flex-direction: column; /* 각 가게를 세로로 나열합니다. */
+  gap: 20px;
+}
+
+.storeItem {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%; /* 가로폭을 100%로 설정하여 한 줄에 하나의 가게만 표시합니다. */
+  box-sizing: border-box;
+}
+
+.storeTitle {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.review-id-label {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.storeCategory {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.storeAddress {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.storeHomePageLink {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
