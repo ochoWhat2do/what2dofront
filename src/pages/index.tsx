@@ -41,10 +41,14 @@ export default function Home() {
 
   const viewStore = async (storeKey: string) => {
     try {
-      router.push({
-        pathname: `/store/storeView`,
-        search: `storeKey=${storeKey}`,
-      })
+      //query
+      router.push(
+        {
+          pathname: '/store/storeView',
+          query: { storeKey: storeKey, searchQuery: query },
+        },
+        '/store/storeView',
+      )
     } catch (error: any) {
       window.alert(error.response.data.statusMessage)
       return
