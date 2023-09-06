@@ -33,7 +33,9 @@ const Header = () => {
     removeCookie('user_info')
     router.push('/login')
   }
-
+  const handleMyPage = () => {
+    router.push('/users/myPage')
+  }
   const isAuthenticated = !!getCookie('authorization') // Convert to boolean
   const [isClientSideRendered, setIsClientSideRendered] = useState(false)
   useEffect(() => {
@@ -71,6 +73,11 @@ const Header = () => {
     </li>
   )
 
+  const myPageButtons = isAuthenticated && (
+    <li className={styles.navItem}>
+      <button onClick={handleMyPage}>마이페이지</button>
+    </li>
+  )
   const signupLink = !isAuthenticated && (
     <li className={styles.navItem}>
       <Link href="/signup">회원가입</Link>
@@ -88,6 +95,7 @@ const Header = () => {
         <ul>
           {isClientSideRendered && (
             <>
+              {myPageButtons}
               {authenticatedContent}
               {authButtons}
               {signupLink}

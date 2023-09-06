@@ -1,7 +1,12 @@
-export const KAKAO = {
-  LOGIN_URL: 'https://kauth.kakao.com/oauth/authorize',
-  TOKEN_URI: 'https://kauth.kakao.com/oauth/token',
-  USER_INFO_URI: 'https://kapi.kakao.com/v2/user/me',
-  REDIRECT_URI: 'http://localhost:3000/oauth/kakao',
-  CLIENT_ID: '2420484927b53a7b3afea666c847eadc',
+import { KAKAO as KAKAO_CONFIG } from './kakaoKey'
+
+const KAKAO = {
+  LOGIN_URL: KAKAO_CONFIG.LOGIN_URL,
+  TOKEN_URI: KAKAO_CONFIG.TOKEN_URI,
+  USER_INFO_URI: KAKAO_CONFIG.USER_INFO_URI,
+  REDIRECT_URI: KAKAO_CONFIG.REDIRECT_URI,
+  CLIENT_ID: KAKAO_CONFIG.CLIENT_ID,
+  JAVASCRIPT_KEY: KAKAO_CONFIG.JAVASCRIPT_KEY,
 }
+
+export { KAKAO }
