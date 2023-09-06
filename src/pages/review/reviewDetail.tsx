@@ -150,10 +150,13 @@ const reviewDetailPage = () => {
     e.preventDefault() // 기본 이벤트(링크 이동) 방지
 
     // 페이지 이동 및 데이터 전달
-    router.push({
-      pathname: '/review/reviewEdit',
-      query: { storeId: storeId, reviewId: reviewId },
-    })
+    router.push(
+      {
+        pathname: '/review/reviewEdit',
+        query: { storeId: storeId, reviewId: reviewId },
+      },
+      '/review/reviewEdit',
+    )
   }
 
   const handleDeleteReview = () => {
