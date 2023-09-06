@@ -31,11 +31,13 @@ export function useFetchUserInfo() {
         return
       }
 
-      const { email, admin, picture, nickname } = responseData
+      const { userId, email, admin, picture, nickname } = responseData
+
       // Save data in cookies as JSON
       setCookie(
         'user_info',
         JSON.stringify({
+          userId: userId || 0,
           email,
           role: admin ? 'ADMIN' : 'USER',
           picture: picture || '', // Use picture if available, otherwise empty string
