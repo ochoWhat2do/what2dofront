@@ -28,13 +28,14 @@ interface Comment {
   content: string
   createdAt: Date
   likeCount: number
+  liked: boolean
 }
 
 const reviewDetailPage = () => {
   const [reviewModel, setReviewModel] = useState<Review | null>(null) // Updated state
   const [message, setMessage] = useState('')
   const router = useRouter()
-  const { storeId, reviewId } = router.query // 쿼리 파라미터 가져오기
+  const { storeId, reviewId, commentId } = router.query // 쿼리 파라미터 가져오기
   const indexHost = 'http://localhost:8080'
   const devHost = 'http://localhost:8080'
   const auth = getCookie('authorization')
@@ -102,6 +103,12 @@ const reviewDetailPage = () => {
 
       // 댓글목록 업데이트
       setCommentList(commentList)
+      // setCommentLikeCount(commentList.commentLikeCount)
+      // if (commentList.commentLiked) {
+      //   setIsCommentLiked(true)
+      // } else {
+      //   setIsCommentLiked(false)
+      // }
     } catch (error) {
       console.error('Error fetching 리뷰:', error)
     }
@@ -220,6 +227,54 @@ const reviewDetailPage = () => {
       }
     }
     setIsLiked(!isLiked)
+  }
+
+  const handleCommentLikeClick = async (commentId: number) => {
+    const commentIdStr = commentId.toString()
+
+    // 해당 댓글 찾기
+    const commentToUpdate = commentList.find(
+      (comment) => comment.id === commentId,
+    )
+
+    if (!commentToUpdate) return
+
+    try {
+      if (!commentToUpdate.liked) {
+        // 좋아요 요청 보내기
+        await axios.post(
+          `${devHost}/api/stores/${storeId}/reviews/${reviewId}/comments/${commentIdStr}/likes`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${auth}`,
+            },
+          },
+        )
+        // 좋아요 수 증가
+        commentToUpdate.likeCount += 1
+      } else {
+        // 좋아요 취소 요청 보내기
+        await axios.delete(
+          `${devHost}/api/stores/${storeId}/reviews/${reviewId}/comments/${commentIdStr}/likes`,
+          {
+            headers: {
+              Authorization: `Bearer ${auth}`,
+            },
+          },
+        )
+        // 좋아요 수 감소
+        commentToUpdate.likeCount -= 1
+      }
+
+      // 좋아요 상태 토글
+      commentToUpdate.liked = !commentToUpdate.liked
+
+      // 댓글 목록 업데이트
+      setCommentList([...commentList])
+    } catch (error) {
+      console.error('좋아요 처리 오류:', error)
+    }
   }
 
   // 댓글 수정 함수
@@ -386,9 +441,22 @@ const reviewDetailPage = () => {
                         Created At:{' '}
                         {new Date(comment.createdAt).toLocaleString()}
                       </p>
-                      <p className={styles.commentLikes}>
-                        좋아요: {comment.likeCount}
-                      </p>
+                      <div
+                        onClick={() => handleCommentLikeClick(comment.id)}
+                        className={`${styles.commentLikes} ${
+                          comment.liked ? styles.blueBorder : ''
+                        }`}
+                      >
+                        <img src="/images/ic-like.png" alt="좋아요 아이콘" />
+                        <input
+                          type="text"
+                          name="rate"
+                          id="rate"
+                          className={styles['comment-input-like-box']}
+                          value={comment.likeCount}
+                          readOnly
+                        />
+                      </div>
                     </div>
                     <div className={styles.commentRightContainer}>
                       {/* 'ic-edit' 이미지를 클릭하면 수정 가능한 input 상자로 변경 */}
