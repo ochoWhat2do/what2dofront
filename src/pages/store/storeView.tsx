@@ -181,30 +181,33 @@ export default function Home() {
             )}
             <h2>리뷰</h2>
             <div className={styles.reviewContainer}>
-              {reviewList.map((review) => (
-                <div
-                  key={review.id}
-                  className={styles.reviewItem}
-                  onClick={(e) => handleReviewClick(e, review.id)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <h3 className={styles.reviewTitle}>{review.title}</h3>
-                  <p className={`${styles.reviewRate} ${styles.rate}`}>
-                    <span className={styles.rate}>별점:</span> {review.rate}
-                  </p>
-                  <p className={`${styles.reviewcreateEmail} ${styles.label}`}>
-                    <span className={styles.label}>작성자:</span>{' '}
-                    {review.createEmail}
-                  </p>
-                  <p className={styles.reviewContent}>{review.content}</p>
-                  <p className={styles.reviewDate}>
-                    Created At: {new Date(review.createdAt).toLocaleString()}
-                  </p>
-                  <p className={styles.reviewLikes}>
-                    Likes: {review.likeCount}
-                  </p>
-                </div>
-              ))}
+              {reviewList &&
+                reviewList.map((review) => (
+                  <div
+                    key={review.id}
+                    className={styles.reviewItem}
+                    onClick={(e) => handleReviewClick(e, review.id)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <h3 className={styles.reviewTitle}>{review.title}</h3>
+                    <p className={`${styles.reviewRate} ${styles.rate}`}>
+                      <span className={styles.rate}>별점:</span> {review.rate}
+                    </p>
+                    <p
+                      className={`${styles.reviewcreateEmail} ${styles.label}`}
+                    >
+                      <span className={styles.label}>작성자:</span>{' '}
+                      {review.createEmail}
+                    </p>
+                    <p className={styles.reviewContent}>{review.content}</p>
+                    <p className={styles.reviewDate}>
+                      Created At: {new Date(review.createdAt).toLocaleString()}
+                    </p>
+                    <p className={styles.reviewLikes}>
+                      Likes: {review.likeCount}
+                    </p>
+                  </div>
+                ))}
             </div>
           </div>
         </div>
