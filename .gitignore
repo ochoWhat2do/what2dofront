@@ -35,4 +35,4 @@ yarn-error.log*
 next-env.d.ts
 
 # secret files
-src/variables/kakaoKey.ts
+# src/variables/kakaoKey.ts

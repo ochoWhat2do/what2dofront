@@ -112,3 +112,8 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.kakaoMap {
+  width: 400px;
+  height: 400px;
+}

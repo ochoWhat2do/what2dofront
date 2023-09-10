@@ -5,15 +5,17 @@ import { setCookie } from '../../utils/cookie'
 
 const Kakao = () => {
   const router = useRouter()
-  //backend 주소
+  // backend 주소
   const indexHost = 'http://localhost:8080' // 로컬
-  const devHost = 'http://localhost:8080' // 개발
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080' // 개발
   const [message, setMessage] = useState('')
   const handleKakaoCallback = async (code: string | string[] | undefined) => {
     try {
       if (code) {
         // 카카오 서버로부터 액세스 토큰 요청
-        const response = await axios.post(`${devHost}/oauth/kakao?code=${code}`)
+        const response = await axios.post(
+          `${apiBaseUrl}/oauth/kakao?code=${code}`,
+        )
 
         if (response.status === 200) {
           // 엑세스 토큰과 리프레시 토큰을 받았다

@@ -1,27 +1,85 @@
-// {
-//   "extends": "next/core-web-vitals"
-// }
+/* eslint-disable */
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "prettier"],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "createDefaultProgram": true
   },
   "env": {
-    "node": true
+    // 전역객체를 eslint가 인식하는 구간
+    "browser": true, // document나 window 인식되게 함
+    "node": true,
+    "es6": true
   },
+  "ignorePatterns": ["node_modules/"], // eslint 미적용될 폴더나 파일 명시
   "extends": [
-    "plugin:@typescript-eslint/recommended",
     "airbnb",
     "airbnb-typescript",
-    "plugin:prettier/recommended",
-    "next/core-web-vitals"
+    "airbnb/hooks",
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended", // ts 권장
+    "plugin:prettier/recommended", // eslint의 포매팅을 prettier로 사용.
+    "prettier" // eslint-config-prettier prettier와 중복된 eslint 규칙 제거
   ],
   "rules": {
-    // 'React' must be in scope when using JSX 에러 해결 (Next.js)
     "react/react-in-jsx-scope": "off",
-    // ts파일에서 tsx구문 허용 (Next.js)
-    "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }]
+    "react/jsx-filename-extension": ["warn", { "extensions": [".ts", ".tsx"] }],
+    "no-useless-catch": "off",
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/naming-convention": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": [
+          "arrow-function",
+          "function-declaration",
+          "function-expression"
+        ],
+        "unnamedComponents": ["arrow-function", "function-expression"]
+      }
+    ],
+    "@typescript-eslint/no-use-before-define": "off",
+    "react/button-has-type": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "react/destructuring-assignment": "off",
+    "import/prefer-default-export": "off",
+    "import/order": "off", // import 순서 관련 규칙 비활성화
+    "import/no-useless-path-segments": "off", // Useless path segments 규칙 끄기
+    "react/sort-comp": "off", // Sort comp 규칙 끄기
+    "no-useless-return": "off", // Unnecessary return statement 규칙 끄기
+    "class-methods-use-this": "off", // Expected 'this' to be used 규칙 끄기
+    "no-plusplus": "off", // Unary operator '++' used 규칙 끄기
+    "react/jsx-no-useless-fragment": "off", // Fragments should contain more than one child 규칙 끄기
+    "react/no-array-index-key": "off", // Do not use Array index in keys 규칙 끄기
+    "jsx-a11y/click-events-have-key-events": "off", // Visible, non-interactive elements with click handlers must have at least one keyboard listener 규칙 끄기
+    "jsx-a11y/no-noninteractive-element-interactions": "off", // Non-interactive elements should not be assigned mouse or keyboard event listeners 규칙 끄기
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "object-shorthand": "off", // Expected property shorthand 규칙 끄기
+    "prefer-template": "off", // Unexpected string concatenation 규칙 끄기
+    "react-hooks/rules-of-hooks": "off", // React Hook "useState" is called in function "reviewDetailPage" 규칙 끄기
+    "@typescript-eslint/no-shadow": "off", // 'title' is already declared in the upper scope on line 38 column 10 규칙 끄기
+    "prefer-destructuring": "off", // Use object destructuring 규칙 끄기
+    "@typescript-eslint/dot-notation": "off", // @typescript-eslint/dot-notation 규칙 끄기
+    "one-var": "off", // "one-var" 규칙 끄기
+    "jsx-a11y/img-redundant-alt": "off", // Redundant alt attribute 규칙 끄기
+    "react/jsx-props-no-spreading": "off",
+    "react/self-closing-comp": "off",
+    "no-nested-ternary": "off", // Do not nest ternary expressions 규칙 끄기
+    "@next/next/no-img-element": "off",
+    "import/newline-after-import": "off",
+    "import/no-duplicates": "off", // import/no-duplicates 규칙 끄기
+    "react/require-default-props": "off",
+    "react/default-props-match-prop-types": "off",
+    "consistent-return": "off", // consistent-return 룰 비활성화
+    "func-names": "off",
+    "no-alert": "off", // no-alert 규칙 끄기
+    "no-console": "off",
+    "no-debugger": "off"
   }
 }

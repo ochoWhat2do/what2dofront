@@ -11,9 +11,9 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
-  //backend 주소
+  // backend 주소
   const indexHost = 'http://localhost:8080' // 로컬
-  const devHost = 'http://localhost:8080' // 개발
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080' // 개발
 
   // 카카오 로그인 시작
   const handleKakaoLogin = async () => {
@@ -28,8 +28,9 @@ const Login = () => {
   }
 
   const handleLogin = async () => {
+    console.log(apiBaseUrl)
     try {
-      const response = await axios.post(devHost + '/api/users/login', {
+      const response = await axios.post(apiBaseUrl + '/api/users/login', {
         email,
         password,
       })

@@ -4,7 +4,7 @@ import { getCookie, setCookie } from '../utils/cookie'
 import { useRouter } from 'next/router'
 
 const indexHost = 'http://localhost:8080'
-const devHost = 'http://localhost:8080'
+const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080'
 const bearer = 'Bearer '
 
 // Define a custom hook for fetching user info
@@ -19,7 +19,7 @@ export function useFetchUserInfo() {
     }
 
     try {
-      const response = await axios.get(`${devHost}/api/users/info`, {
+      const response = await axios.get(`${apiBaseUrl}/api/users/info`, {
         headers: {
           Authorization: bearer + auth,
         },

@@ -16,9 +16,9 @@ const Signup = () => {
   const [city, setCity] = useState('') // State for city input
   const [gender, setGender] = useState('') // State for gender select
   const [passwordMismatch, setPasswordMismatch] = useState(false)
-  //backend 주소
+  // backend 주소
   const indexHost = 'http://localhost:8080' // 로컬
-  const devHost = 'http://localhost:8080' // 개발
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080' // 개발
 
   const handleEmailBlur = async () => {
     if (!validateEmail(email)) {
@@ -29,7 +29,7 @@ const Signup = () => {
     try {
       debugger
       const response = await axios.get(
-        devHost + `/api/users/checkEmail?email=${email}`,
+        apiBaseUrl + `/api/users/checkEmail?email=${email}`,
       )
 
       if (response.data) {
@@ -76,7 +76,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post(devHost + '/api/users/signup', {
+      const response = await axios.post(apiBaseUrl + '/api/users/signup', {
         email,
         password,
         nickname,

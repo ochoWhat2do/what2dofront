@@ -12,10 +12,18 @@ interface Store {
 }
 
 interface StoreListProps {
-  storeList: Store[]
+  storeList: Store[] | null // null을 허용하는 타입으로 정의
 }
 
 const StoreList: React.FC<StoreListProps> = ({ storeList }) => {
+  StoreList.defaultProps = {
+    storeList: [], // 기본값 설정
+  }
+  if (!storeList) {
+    // storeList가 null일 때, 메시지를 표시하거나 다른 처리를 수행
+    return <p>가게 목록이 없습니다.</p>
+  }
+
   return (
     <div className="container">
       <div className="row">
