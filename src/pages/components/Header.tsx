@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { getCookie, setCookie, removeCookie } from '../../utils/cookie'
-import styles from './Header.module.css'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { getCookie, removeCookie } from '../../utils/cookie'
+import styles from './Header.module.css'
 import { useFetchUserInfo } from '../../utils/auth' // Import useFetchUserInfo from auth.ts
 
 interface UserInfo {

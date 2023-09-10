@@ -6,9 +6,9 @@ import { useRouter } from 'next/router'
 import styles from '../styles/profile.module.css' // Import profile.module.css
 
 const Profile = () => {
-  //backend 주소
+  // backend 주소
   const indexHost = 'http://localhost:8080' // 로컬
-  const devHost = 'http://localhost:8080' // 개발
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080' // 개발
 
   const router = useRouter()
   const auth = getCookie('authorization')
@@ -30,7 +30,7 @@ const Profile = () => {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get(`${devHost}/api/users/profile`, {
+      const response = await axios.get(`${apiBaseUrl}/api/users/profile`, {
         headers: {
           Authorization: bearer + auth,
         },
@@ -92,12 +92,16 @@ const Profile = () => {
         }),
       )
 
-      const response = await axios.put(devHost + '/api/users/info', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${auth}`,
+      const response = await axios.put(
+        apiBaseUrl + '/api/users/info',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${auth}`,
+          },
         },
-      })
+      )
 
       window.alert('프로필을 수정하였습니다.')
       router.push('/')
@@ -118,7 +122,7 @@ const Profile = () => {
         password: password, // Add the password value
       }
 
-      await axios.delete(`${devHost}/api/users/info`, {
+      await axios.delete(`${apiBaseUrl}/api/users/info`, {
         headers: {
           Authorization: `Bearer ${auth}`,
         },
@@ -189,7 +193,7 @@ const Profile = () => {
             <img
               src={picture || '/images/ic-person.png'}
               alt="프로필 사진"
-              className={`${styles['profile-image']} ${styles['rounded']}`}
+              className={`${styles['profile-image']} ${styles.rounded}`}
             />
           </div>
           <input

@@ -44,9 +44,9 @@ const MyPage = () => {
   const [message, setMessage] = useState('')
   const { storeKey } = router.query // 쿼리 파라미터 가져오기
   const { storeId, reviewId } = router.query // 쿼리 파라미터 가져오기
-  //backend 주소
+  // backend 주소
   const indexHost = 'http://localhost:8080' // 로컬
-  const devHost = 'http://localhost:8080' // 개발 const auth = getCookie('authorization')
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080' // 개발 const auth = getCookie('authorization')
   const auth = getCookie('authorization')
   const bearer = 'Bearer '
   const [storeList, setStoreList] = useState<Store[]>([])
@@ -65,7 +65,7 @@ const MyPage = () => {
     try {
       console.log(user_info)
       const response = await axios.get(
-        `${devHost}/api/users/${user_info.userId}/reviews`,
+        `${apiBaseUrl}/api/users/${user_info.userId}/reviews`,
         {
           params: {
             page: 1,
@@ -91,14 +91,17 @@ const MyPage = () => {
   const getMyStores = async () => {
     try {
       console.log(user_info)
-      const response = await axios.get(`${devHost}/api/stores/storefavorites`, {
-        params: {
-          storeKey: storeKey,
+      const response = await axios.get(
+        `${apiBaseUrl}/api/stores/storefavorites`,
+        {
+          params: {
+            storeKey: storeKey,
+          },
+          headers: {
+            Authorization: bearer + auth,
+          },
         },
-        headers: {
-          Authorization: bearer + auth,
-        },
-      })
+      )
       console.log(response.data)
       setStoreList(response.data.storeFavoriteList) // Set the fetched data to the state
     } catch (error) {

@@ -36,7 +36,7 @@ const reviewDetailPage = () => {
   const router = useRouter()
   const { storeId, reviewId } = router.query // 쿼리 파라미터 가져오기
   const indexHost = 'http://localhost:8080'
-  const devHost = 'http://localhost:8080'
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080'
   const auth = getCookie('authorization')
   const bearer = 'Bearer '
   const [commentList, setCommentList] = useState<Comment[]>([])
@@ -55,7 +55,7 @@ const reviewDetailPage = () => {
   const getReiview = async () => {
     try {
       const response = await axios.get(
-        `${devHost}/api/stores/${storeId}/reviews/${reviewId}`,
+        `${apiBaseUrl}/api/stores/${storeId}/reviews/${reviewId}`,
         {
           headers: {
             Authorization: bearer + auth,
@@ -74,17 +74,10 @@ const reviewDetailPage = () => {
     }
   }
 
-  useEffect(() => {
-    // Check if storeModel has a value before calling getReviews
-    if (reviewModel) {
-      getComments()
-    }
-  }, [reviewModel])
-
   const getComments = async () => {
     try {
       const response = await axios.get(
-        `${devHost}/api/stores/${storeId}/reviews/${reviewId}/comments`,
+        `${apiBaseUrl}/api/stores/${storeId}/reviews/${reviewId}/comments`,
         {
           params: {
             page: 1,
@@ -97,7 +90,7 @@ const reviewDetailPage = () => {
           },
         },
       )
-      //console.log(response.data)
+
       const commentList = response.data
 
       // 댓글목록 업데이트
@@ -106,6 +99,13 @@ const reviewDetailPage = () => {
       console.error('Error fetching 리뷰:', error)
     }
   }
+
+  useEffect(() => {
+    // Check if storeModel has a value before calling getReviews
+    if (reviewModel) {
+      getComments()
+    }
+  }, [reviewModel])
 
   const handleSubmitComment = async () => {
     if (commentContent.trim() === '') {
@@ -121,7 +121,7 @@ const reviewDetailPage = () => {
       }
 
       await axios.post(
-        `${devHost}/api/stores/${storeId}/reviews/${reviewId}/comments`,
+        `${apiBaseUrl}/api/stores/${storeId}/reviews/${reviewId}/comments`,
         requestDto,
         {
           headers: {
@@ -169,7 +169,7 @@ const reviewDetailPage = () => {
   const deleteReview = async () => {
     try {
       await axios.delete(
-        `${devHost}/api/stores/${storeId}/reviews/${reviewId}`,
+        `${apiBaseUrl}/api/stores/${storeId}/reviews/${reviewId}`,
         {
           headers: {
             Authorization: `Bearer ${auth}`,
@@ -190,7 +190,7 @@ const reviewDetailPage = () => {
       try {
         // 좋아요 요청 보내기
         const response = await axios.delete(
-          `${devHost}/api/stores/${storeId}/reviews/${reviewId}/likes`,
+          `${apiBaseUrl}/api/stores/${storeId}/reviews/${reviewId}/likes`,
           {
             headers: {
               Authorization: `Bearer ${auth}`,
@@ -206,7 +206,7 @@ const reviewDetailPage = () => {
       try {
         // 좋아요 요청 보내기
         const response = await axios.post(
-          `${devHost}/api/stores/${storeId}/reviews/${reviewId}/likes`,
+          `${apiBaseUrl}/api/stores/${storeId}/reviews/${reviewId}/likes`,
           null, // 데이터가 없는 경우 null로 설정
           {
             headers: {
@@ -232,7 +232,7 @@ const reviewDetailPage = () => {
       if (!updatedComment) return
 
       await axios.put(
-        `${devHost}/api/stores/${storeId}/reviews/${reviewId}/comments/${commentId}`,
+        `${apiBaseUrl}/api/stores/${storeId}/reviews/${reviewId}/comments/${commentId}`,
         { content: updateCommnetContent },
         {
           headers: {
@@ -255,7 +255,7 @@ const reviewDetailPage = () => {
   const deleteComment = async (commentId: number) => {
     try {
       await axios.delete(
-        `${devHost}/api/stores/${storeId}/reviews/${reviewId}/comments/${commentId}`,
+        `${apiBaseUrl}/api/stores/${storeId}/reviews/${reviewId}/comments/${commentId}`,
         {
           headers: {
             Authorization: `Bearer ${auth}`,

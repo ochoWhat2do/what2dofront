@@ -22,7 +22,7 @@ export default function Home() {
   const router = useRouter()
   const bearer = 'Bearer '
   const indexHost = 'http://localhost:8080'
-  const devHost = 'http://localhost:8080'
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080'
   const auth = getCookie('authorization')
   const query = '강남구' // Replace with the actual query
   const page = '1' // Replace with the actual page
@@ -41,7 +41,7 @@ export default function Home() {
 
   const viewStore = async (storeKey: string) => {
     try {
-      //query
+      // query
       router.push(
         {
           pathname: '/store/storeView',
@@ -57,7 +57,7 @@ export default function Home() {
 
   const getStoreList = async (searchQuery: string) => {
     try {
-      const response = await axios.get(`${devHost}/api/daum/search`, {
+      const response = await axios.get(`${apiBaseUrl}/api/daum/search`, {
         params: {
           query: searchQuery,
           page: page,
@@ -66,8 +66,6 @@ export default function Home() {
           Authorization: bearer + auth,
         },
       })
-
-      console.log(response.data)
       setStoreList(response.data.storeList) // Set the fetched data to the state
     } catch (error) {
       console.error('Error fetching profile:', error)
@@ -77,7 +75,6 @@ export default function Home() {
   // 검색 버튼 클릭 시 처리 함수
   const handleSearch = () => {
     // 검색 쿼리에 대한 처리를 추가하세요.
-    console.log('검색어:', searchQuery)
     if (!searchQuery) {
       window.alert('검색어를 입력하세요.')
       return
@@ -94,7 +91,7 @@ export default function Home() {
 
   const getStoreListByCategory = async (categoryQuery: string) => {
     try {
-      const response = await axios.get(`${devHost}/api/stores/search`, {
+      const response = await axios.get(`${apiBaseUrl}/api/stores/search`, {
         params: {
           category: categoryQuery,
           page: page,
@@ -104,7 +101,6 @@ export default function Home() {
         },
       })
 
-      console.log(response.data)
       if (response.data) {
         const formattedData = response.data.storeCategoryList.map(
           (item: any) => ({

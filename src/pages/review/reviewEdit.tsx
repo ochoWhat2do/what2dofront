@@ -31,7 +31,7 @@ const reviewDetailPage = () => {
   const router = useRouter()
   const { storeId, reviewId } = router.query // 쿼리 파라미터 가져오기
   const indexHost = 'http://localhost:8080'
-  const devHost = 'http://localhost:8080'
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080'
   const auth = getCookie('authorization')
   const bearer = 'Bearer '
 
@@ -47,7 +47,7 @@ const reviewDetailPage = () => {
   const getReiview = async () => {
     try {
       const response = await axios.get(
-        `${devHost}/api/stores/${storeId}/reviews/${reviewId}`,
+        `${apiBaseUrl}/api/stores/${storeId}/reviews/${reviewId}`,
         {
           headers: {
             Authorization: bearer + auth,
@@ -100,7 +100,7 @@ const reviewDetailPage = () => {
       )
 
       const response = await axios.put(
-        `${devHost}/api/stores/${storeId}/reviews/${reviewId}`,
+        `${apiBaseUrl}/api/stores/${storeId}/reviews/${reviewId}`,
         formData,
         {
           headers: {
