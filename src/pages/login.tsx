@@ -19,7 +19,9 @@ const Login = () => {
     try {
       // 카카오 로그인 페이지로 리다이렉트
       const client_id = KAKAO.CLIENT_ID
-      const redirect_uri = KAKAO.REDIRECT_URI
+      const redirect_uri =
+        process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL ||
+        'https://www.what2do.co.kr/oauth/kakao' // 개발
       window.location.href = `${KAKAO.LOGIN_URL}?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`
     } catch (error) {
       setMessage('로그인 중 오류가 발생했습니다.')
