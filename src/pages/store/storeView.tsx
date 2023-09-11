@@ -63,8 +63,7 @@ export default function Home() {
     const createMapScript = () => {
       const script = document.createElement('script')
       script.async = true
-      const clientId = KAKAOVALUE.JAVASCRIPT_KEY
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${clientId}&autoload=false&libraries=services,clusterer,drawing`
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=c7164810a4da63b5ef9d0d5048d15c05&autoload=false&libraries=services,clusterer,drawing`
       document.head.appendChild(script)
       setMapScript(script) // 스크립트 엘리먼트를 상태로 설정
     }
