@@ -59,7 +59,7 @@ export default function Home() {
 
   useEffect(() => {
     getStore()
-    // mapScript를 생성하고 동적으로 스크립트를 추가하는 함수
+    // mapScript를 생성하고 동적으로 스크립트를 추가하는 함수(카카오)
     const createMapScript = () => {
       const script = document.createElement('script')
       script.async = true
@@ -101,7 +101,6 @@ export default function Home() {
   }
 
   useEffect(() => {
-    // Check if storeModel has a value before calling getReviews
     if (storeModel) {
       getReviews()
     }
