@@ -59,11 +59,12 @@ export default function Home() {
 
   useEffect(() => {
     getStore()
-    // mapScript를 생성하고 동적으로 스크립트를 추가하는 함수
+    // mapScript를 생성하고 동적으로 스크립트를 추가하는 함수(카카오)
     const createMapScript = () => {
       const script = document.createElement('script')
       script.async = true
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=c7164810a4da63b5ef9d0d5048d15c05&autoload=false&libraries=services,clusterer,drawing`
+      const clientId = KAKAOVALUE.JAVASCRIPT_KEY
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${clientId}&autoload=false&libraries=services,clusterer,drawing`
       document.head.appendChild(script)
       setMapScript(script) // 스크립트 엘리먼트를 상태로 설정
     }
@@ -100,7 +101,6 @@ export default function Home() {
   }
 
   useEffect(() => {
-    // Check if storeModel has a value before calling getReviews
     if (storeModel) {
       getReviews()
     }
