@@ -207,7 +207,7 @@ const Signup = () => {
               id="admin-check"
               name="admin"
               onChange={handleAdminCheckbox}
-              style={{ marginTop: '40px' }}
+              style={{ marginTop: '20px' }}
             />
             사장님(판매자)
           </label>

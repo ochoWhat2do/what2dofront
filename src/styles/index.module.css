@@ -11,6 +11,10 @@
   justify-content: center; /* 가로 가운데 정렬을 위한 스타일 추가 */
   text-align: center;
   padding: 40px;
+  border: 2px solid purple;
+  border-radius: 50px;
+  margin: 20px 500px 60px 500px;
+  padding: 10px;
 }
 
 .searchBox input {

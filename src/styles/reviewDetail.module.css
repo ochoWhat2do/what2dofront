@@ -14,6 +14,10 @@
   padding: 20px; /* 내용과의 여백을 추가할 수 있습니다. */
 }
 
+.title1 {
+  margin: 5px 0 0 20px;
+}
+
 .reviewItem {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -22,6 +26,7 @@
   align-items: center;
   background-color: #fff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 5px 0 0 20px;
 }
 
 .reviewImage {
@@ -37,7 +42,7 @@
 }
 
 .reviewTitle {
-  font-size: 24px;
+  font-size: 18px;
   margin-bottom: 10px;
 }
 
@@ -102,6 +107,7 @@
   border-radius: 8px;
   width: 100%; /* 가로폭을 100%로 설정하여 한 줄에 하나의 리뷰만 표시합니다. */
   box-sizing: border-box;
+  margin: 5px 0 0 20px;
 }
 
 .commentContent {
@@ -126,7 +132,7 @@
 
 .review-id-move {
   padding: 10px 20px;
-  background-color: #008000;
+  background-color: #7a2dd2;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -135,9 +141,9 @@
 
 .review-id-delete {
   padding: 10px 20px;
-  background-color: #ff0000;
-  color: #fff;
-  border: none;
+  background-color: #fff;
+  color: #7a2dd2;
+  border: 1px solid #7a2dd2;
   border-radius: 5px;
   cursor: pointer;
   margin-left: 10px;
@@ -152,7 +158,11 @@
 
 .comment_editor {
   width: 600px;
-  margin-bottom: 10px;
+  margin: 5px 0 20px 20px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  box-sizing: border-box;
 }
 
 .comment_text_area {
@@ -161,7 +171,7 @@
 
 .comment-id-submit {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #7a2dd2;
   color: #fff;
   border: none;
   border-radius: 5px;

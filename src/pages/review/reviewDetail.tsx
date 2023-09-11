@@ -280,7 +280,7 @@ const reviewDetailPage = () => {
         <div className={styles.leftContent}>
           {/* 왼쪽 컨텐츠 영역 */}
           <div>
-            <h2>리뷰 상세화면</h2>
+            <h2 className={styles.title1}>리뷰 상세화면</h2>
             {reviewModel && (
               <div className={styles.reviewItem}>
                 {/* 이미지 태그를 attachment의 개수에 따라 생성 */}
@@ -346,7 +346,7 @@ const reviewDetailPage = () => {
                 </div>
               </div>
             )}
-            <h2>댓글</h2>
+            <h2 className={styles.title1}>댓글</h2>
             <div className={styles.comment_editor}>
               <textarea
                 placeholder="댓글을 입력하세요..."
@@ -418,7 +418,7 @@ const reviewDetailPage = () => {
                   </div>
                 ))
               ) : (
-                <p>댓글이 없습니다.</p>
+                <p className={styles.title1}>댓글이 없습니다.</p>
               )}
             </div>
           </div>

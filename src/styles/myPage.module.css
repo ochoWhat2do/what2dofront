@@ -6,7 +6,7 @@
 
 .container {
   padding: 20px;
-  border: 2px solid #ffc0cb;
+  border: 2px solid purple;
   border-radius: 15px;
   margin: 20px;
 }
@@ -16,7 +16,7 @@
   width: 100px;
   height: 24px;
   border-radius: 15px;
-  background-color: pink;
+  background-color: #efe0ff;
   text-align: center; /* 가운데 정렬 */
   font-weight: bold; /* 글자 굵게 설정 */
   margin-bottom: 20px;
@@ -66,7 +66,7 @@
   width: 140px;
   height: 24px;
   border-radius: 15px;
-  background-color: pink;
+  background-color: #efe0ff;
   text-align: center; /* 가운데 정렬 */
   font-weight: bold; /* 글자 굵게 설정 */
   margin-bottom: 20px;
