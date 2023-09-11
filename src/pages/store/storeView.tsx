@@ -241,7 +241,7 @@ export default function Home() {
         <div className={styles.leftContent}>
           {/* 왼쪽 컨텐츠 영역 */}
           <div>
-            <h2>가게 상세화면</h2>
+            <h2 className={styles.title1}>가게 상세화면</h2>
             {storeModel && (
               <div className={styles['review-button-container']}>
                 <button
@@ -277,7 +277,7 @@ export default function Home() {
                 </div>
               </div>
             )}
-            <h2>리뷰</h2>
+            <h2 className={styles.title1}>리뷰</h2>
             <div className={styles.reviewContainer}>
               {reviewList &&
                 reviewList.map((review) => (

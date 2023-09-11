@@ -5,7 +5,7 @@
   justify-content: space-between;
   height: 80px;
   padding: 0 20px;
-  background-color: #f0f0f0;
+  background-color: #7a2dd2;
 }
 
 .logo {
@@ -27,6 +27,7 @@
 
 .navItem {
   margin-right: 20px;
+  color: white;
 }
 
 /* Add this style to align profile image and logout button in a row */
