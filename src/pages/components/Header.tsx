@@ -88,7 +88,7 @@ const Header = () => {
     <header className={styles.header}>
       <div className={styles.logo}>
         <Link href="/">
-          <img src="/images/what2do_logo.png" alt="로고 이미지" width="120" />
+          <img src="/images/what2do_logo.png" alt="로고 이미지" width="80" />
         </Link>
       </div>
       <nav className={styles.nav}>
