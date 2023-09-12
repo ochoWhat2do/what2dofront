@@ -31,6 +31,7 @@ export default function Home() {
 
   useEffect(() => {
     if (auth) {
+      setSearchQuery(query)
       getStoreList(query)
     }
   }, [])
@@ -45,7 +46,7 @@ export default function Home() {
       router.push(
         {
           pathname: '/store/storeView',
-          query: { storeKey: storeKey, searchQuery: query },
+          query: { storeKey: storeKey, searchQuery: searchQuery },
         },
         '/store/storeView',
       )
