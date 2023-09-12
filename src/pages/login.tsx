@@ -94,18 +94,17 @@ const Login = () => {
           로그인
         </button>
         <p>{message}</p>
-      </div>
-      <div className={styles['social-login']}>
-        <button onClick={handleKakaoLogin}>
-          <img
-            className={styles['kakao-logo']}
-            src="/images/kakao-logo.png"
-            alt="Kakao"
-          />{' '}
-          Kakao 로그인
-        </button>
-      </div>
-      {/* <a className="btn btn-block social-btn google" href="#">
+        <div className={styles['social-login']}>
+          <button onClick={handleKakaoLogin}>
+            <img
+              className={styles['kakao-logo']}
+              src="/images/kakao-logo.png"
+              alt="Kakao"
+            />{' '}
+            Kakao 로그인
+          </button>
+        </div>
+        {/* <a className="btn btn-block social-btn google" href="#">
           <img
             className="google-logo"
             src="/images/google-logo.png"
@@ -113,7 +112,7 @@ const Login = () => {
           />{' '}
           Sign in with Google
         </a> */}
-      {/* <a className="btn btn-block social-btn naver" href="#">
+        {/* <a className="btn btn-block social-btn naver" href="#">
           <img
             className="naver-logo"
             src="/images/naver-logo.png"
@@ -121,6 +120,7 @@ const Login = () => {
           />{' '}
           Sign in with Naver
         </a> */}
+      </div>
     </div>
   )
 }

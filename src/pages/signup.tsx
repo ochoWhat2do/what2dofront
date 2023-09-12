@@ -16,6 +16,10 @@ const Signup = () => {
   const [city, setCity] = useState('') // State for city input
   const [gender, setGender] = useState('') // State for gender select
   const [passwordMismatch, setPasswordMismatch] = useState(false)
+  const [verificationCode, setVerificationCode] = useState('')
+  const [isVerificationCodeSent, setIsVerificationCodeSent] = useState(false)
+  const [isVerificationCodeValid, setIsVerificationCodeValid] = useState(false)
+
   // backend 주소
   const indexHost = 'http://localhost:8080' // 로컬
   const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080' // 개발
@@ -111,6 +115,55 @@ const Signup = () => {
     return isValid
   }
 
+  const sendVerificationCode = async () => {
+    try {
+      // 이메일 유효성 검사
+      if (!validateEmail(email)) {
+        window.alert('유효한 이메일 형식이 아닙니다.')
+        return
+      }
+
+      // 서버로 이메일을 보내 인증번호 요청
+      const response = await axios.post(
+        apiBaseUrl + '/api/users/confirm-email',
+        {
+          email,
+        },
+      )
+
+      if (response.status === 200) {
+        window.alert('인증번호가 이메일로 발송되었습니다.')
+        setIsVerificationCodeSent(true)
+      }
+    } catch (error) {
+      console.error('인증번호 발송 오류:', error)
+      window.alert('인증번호 발송 중 오류가 발생했습니다.')
+    }
+  }
+
+  // const verifyVerificationCode = async () => {
+  //   try {
+  //     // 서버로 인증번호 검증 요청
+  //     const response = await axios.post(
+  //       apiBaseUrl + '/api/users/인증코드 확인하는 코드 없음. 그리고 인증 이메일에 dia delivery라고 되어있음 수정 필요!!',
+  //       {
+  //         email,
+  //         verificationCode,
+  //       },
+  //     )
+
+  //     if (response.status === 200 && response.data.isValid) {
+  //       window.alert('인증번호가 올바릅니다.')
+  //       setIsVerificationCodeValid(true)
+  //     } else {
+  //       window.alert('인증번호가 유효하지 않습니다.')
+  //     }
+  //   } catch (error) {
+  //     console.error('인증번호 검증 오류:', error)
+  //     window.alert('인증번호 검증 중 오류가 발생했습니다.')
+  //   }
+  // }
+
   return (
     <div>
       <Header /> {/* Render the Header component here */}
@@ -127,6 +180,30 @@ const Signup = () => {
             onChange={(e) => setEmail(e.target.value)}
             onBlur={handleEmailBlur} // Call email validation on blur
           />
+        </div>
+        <div>
+          <div>
+            <button
+              className={styles['send-verification-button']}
+              onClick={sendVerificationCode}
+            >
+              인증번호 전송
+            </button>
+          </div>
+          {isVerificationCodeSent && (
+            <div className={styles['verification-check-box']}>
+              <input
+                type="text"
+                placeholder="인증번호 입력"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+              />
+              {/* <button onClick={verifyVerificationCode}>인증번호 확인</button> */}
+            </div>
+          )}
+          {/* {isVerificationCodeValid && (
+            <p style={{ color: 'green' }}>인증번호가 확인되었습니다.</p>
+          )} */}
         </div>
         <div className={styles['signup-input-container']}>
           <div className="signup-id-label">비밀번호</div>
@@ -200,7 +277,7 @@ const Signup = () => {
             <option value="female">여성</option>
           </select>
         </div>
-        <div>
+        <div className={styles['signup-admin-box']}>
           <label>
             <input
               type="checkbox"
