@@ -88,8 +88,8 @@ export default function Home() {
     }
 
     // 검색어에 "맛집" 또는 "까페"가 포함되어 있는지 확인
-    if (!words.some((word) => ['맛집', '까페'].includes(word))) {
-      window.alert("검색어에 '맛집' 또는 '까페'를 포함해야 합니다.")
+    if (!words.some((word) => ['맛집', '카페'].includes(word))) {
+      window.alert("검색어에 '맛집' 또는 '카페'를 포함해야 합니다.")
       return
     }
 
