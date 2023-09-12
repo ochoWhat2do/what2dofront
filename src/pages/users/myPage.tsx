@@ -53,7 +53,9 @@ const MyPage = () => {
   const [storeStoreKey, setStoreKey] = useState('')
   const [reviewList, setReviewList] = useState<Review[]>([])
   const [myStores, setMyStores] = useState([])
-
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmNewPassword, setConfirmNewPassword] = useState('')
+  const [newPasswordConfirm, setNewPasswordConfirm] = useState('')
   const user_info = getCookie('user_info')
 
   useEffect(() => {
@@ -134,12 +136,76 @@ const MyPage = () => {
     })
   }
 
+  const handlePasswordChange = async () => {
+    debugger
+    if (!password || !newPassword || !newPasswordConfirm) {
+      setMessage('비밀번호를 모두 입력해주세요.')
+      return
+    }
+
+    if (newPassword !== newPasswordConfirm) {
+      setMessage('새로운 비밀번호가 일치하지 않습니다.')
+      return
+    }
+
+    try {
+      const response = await axios.patch(
+        `${apiBaseUrl}/api/users/password`,
+        {
+          password: password,
+          newPassword: newPassword,
+          newPasswordConfirm: newPasswordConfirm,
+        },
+        {
+          headers: {
+            Authorization: bearer + auth,
+          },
+        },
+      )
+
+      if (response.status === 200) {
+        setMessage('비밀번호가 성공적으로 변경되었습니다.')
+        // 비밀번호 변경 후 필요한 추가 작업을 수행하세요.
+      }
+    } catch (error) {
+      setMessage('비밀번호 변경 중 오류가 발생했습니다.')
+    }
+  }
+
   return (
     <div>
       <Header />
       <div className={styles['MyPage-form']}>
         {' '}
         <h2 className={styles.h2}>마이페이지</h2>
+        <div className={styles.passwordChangeForm}>
+          <h1 className={styles.nameBox3}>비밀번호 변경</h1>
+          <input
+            type="password"
+            placeholder="현재 비밀번호"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="새로운 비밀번호"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="새로운 비밀번호 확인"
+            value={newPasswordConfirm}
+            onChange={(e) => setNewPasswordConfirm(e.target.value)}
+          />
+          <button
+            className={styles['passwordChange-submit']}
+            onClick={handlePasswordChange}
+          >
+            비밀번호 변경
+          </button>
+          <p>{message}</p>
+        </div>
         <div className={styles.container}>
           <div className={styles.nameBox}>
             <h1>나의 리뷰</h1>
