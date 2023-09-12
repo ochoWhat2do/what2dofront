@@ -24,7 +24,7 @@ export default function Home() {
   const indexHost = 'http://localhost:8080'
   const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080'
   const auth = getCookie('authorization')
-  const query = '강남구' // Replace with the actual query
+  const query = '강남구 맛집' // Replace with the actual query
   const page = '1' // Replace with the actual page
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedOption, setSelectedOption] = useState('keyword') // 초기 선택값
@@ -77,6 +77,19 @@ export default function Home() {
     // 검색 쿼리에 대한 처리를 추가하세요.
     if (!searchQuery) {
       window.alert('검색어를 입력하세요.')
+      return
+    }
+
+    // 검색어가 띄어쓰기로 2개의 단어로 이루어져 있는지 확인
+    const words = searchQuery.split(' ')
+    if (words.length !== 2) {
+      window.alert('검색어는 2개의 단어로 이루어져야 합니다.')
+      return
+    }
+
+    // 검색어에 "맛집" 또는 "까페"가 포함되어 있는지 확인
+    if (!words.some((word) => ['맛집', '까페'].includes(word))) {
+      window.alert("검색어에 '맛집' 또는 '까페'를 포함해야 합니다.")
       return
     }
 
@@ -141,7 +154,7 @@ export default function Home() {
             </select>
             <input
               type="text"
-              placeholder="검색어를 입력하세요"
+              placeholder="검색어를 입력하세요(검색 형식: 지역명+맛집(까페))"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
