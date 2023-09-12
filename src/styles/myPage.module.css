@@ -111,3 +111,32 @@
   font-size: 12px;
   margin-bottom: 10px;
 }
+
+/* passwordChange */
+.nameBox3 {
+  width: 140px;
+  height: 24px;
+  border-radius: 15px;
+  background-color: #efe0ff;
+  text-align: center; /* 가운데 정렬 */
+  font-weight: bold; /* 글자 굵게 설정 */
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
+.passwordChangeForm {
+  padding: 20px;
+  border: 2px solid purple;
+  border-radius: 15px;
+  margin: 20px;
+}
+
+.passwordChange-submit {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #7f0fff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
