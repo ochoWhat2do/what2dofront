@@ -18,7 +18,8 @@ const Signup = () => {
   const [passwordMismatch, setPasswordMismatch] = useState(false)
   const [verificationCode, setVerificationCode] = useState('')
   const [isVerificationCodeSent, setIsVerificationCodeSent] = useState(false)
-  const [isVerificationCodeValid, setIsVerificationCodeValid] = useState(false)
+  const [isValidCode, setIsValidCode] = useState(false)
+  const [confirmCode, setConfirmCode] = useState('')
 
   // backend 주소
   const indexHost = 'http://localhost:8080' // 로컬
@@ -31,7 +32,6 @@ const Signup = () => {
     }
 
     try {
-      debugger
       const response = await axios.get(
         apiBaseUrl + `/api/users/checkEmail?email=${email}`,
       )
@@ -70,6 +70,10 @@ const Signup = () => {
     // Nickname and password validation
     if (!nickname) {
       window.alert('닉네임은 필수 입력 항목입니다.')
+      return
+    }
+    if (!isValidCode) {
+      window.alert('이메일 인증을 진행해 주세요.')
       return
     }
 
@@ -130,7 +134,9 @@ const Signup = () => {
           email,
         },
       )
-
+      if (response.data) {
+        setConfirmCode(response.data)
+      }
       if (response.status === 200) {
         window.alert('인증번호가 이메일로 발송되었습니다.')
         setIsVerificationCodeSent(true)
@@ -141,28 +147,14 @@ const Signup = () => {
     }
   }
 
-  // const verifyVerificationCode = async () => {
-  //   try {
-  //     // 서버로 인증번호 검증 요청
-  //     const response = await axios.post(
-  //       apiBaseUrl + '/api/users/인증코드 확인하는 코드 없음. 그리고 인증 이메일에 dia delivery라고 되어있음 수정 필요!!',
-  //       {
-  //         email,
-  //         verificationCode,
-  //       },
-  //     )
-
-  //     if (response.status === 200 && response.data.isValid) {
-  //       window.alert('인증번호가 올바릅니다.')
-  //       setIsVerificationCodeValid(true)
-  //     } else {
-  //       window.alert('인증번호가 유효하지 않습니다.')
-  //     }
-  //   } catch (error) {
-  //     console.error('인증번호 검증 오류:', error)
-  //     window.alert('인증번호 검증 중 오류가 발생했습니다.')
-  //   }
-  // }
+  const handleVerificationCodeBlur = async () => {
+    if (verificationCode === confirmCode) {
+      setIsValidCode(true)
+    } else {
+      setIsValidCode(false)
+      window.alert('올바른 코드가 아닙니다.')
+    }
+  }
 
   return (
     <div>
@@ -191,19 +183,20 @@ const Signup = () => {
             </button>
           </div>
           {isVerificationCodeSent && (
-            <div className={styles['verification-check-box']}>
+            <div
+              className={`${styles['email-verification-box']} ${
+                isValidCode ? 'email-code-hidden' : ''
+              }`}
+            >
               <input
                 type="text"
                 placeholder="인증번호 입력"
                 value={verificationCode}
                 onChange={(e) => setVerificationCode(e.target.value)}
+                onBlur={handleVerificationCodeBlur}
               />
-              {/* <button onClick={verifyVerificationCode}>인증번호 확인</button> */}
             </div>
           )}
-          {/* {isVerificationCodeValid && (
-            <p style={{ color: 'green' }}>인증번호가 확인되었습니다.</p>
-          )} */}
         </div>
         <div className={styles['signup-input-container']}>
           <div className="signup-id-label">비밀번호</div>
