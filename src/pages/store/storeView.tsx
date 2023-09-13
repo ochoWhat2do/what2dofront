@@ -6,6 +6,7 @@ import { getCookie, setCookie } from '../../utils/cookie'
 import styles from '../../styles/storeView.module.css'
 import Link from 'next/link'
 import { KAKAO as KAKAOVALUE } from '../../variables/common'
+import Footer from '../components/Footer'
 
 interface Store {
   id: number
@@ -315,6 +316,7 @@ export default function Home() {
           <div id="map" className={styles.kakaoMap} />
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

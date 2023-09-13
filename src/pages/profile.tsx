@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import { getCookie, setCookie } from '../utils/cookie'
 import { useRouter } from 'next/router'
 import styles from '../styles/profile.module.css' // Import profile.module.css
@@ -220,6 +221,7 @@ const Profile = () => {
         </div>
         <p>{message}</p>
       </div>
+      <Footer />
     </div>
   )
 }

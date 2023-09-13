@@ -1,0 +1,48 @@
+/* Header.module.css */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  padding: 0 20px;
+  background-color: #7a2dd2;
+  position: fixed;
+  bottom: 0; /* 페이지 하단에 고정 */
+  left: 0; /* 왼쪽 정렬 */
+  right: 0; /* 오른쪽 정렬 */
+  width: 100%;
+  z-index: 999; /* 다른 요소 위에 레이어를 만들기 위한 값. 필요에 따라 조절할 수 있습니다. */
+}
+
+.companyInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding: 0 20px;
+  background-color: #7a2dd2;
+}
+
+.footerNavItem {
+  margin-right: 20px;
+  color: white;
+}
+
+/* Add this style to align profile image and logout button in a row */
+.footerNavItem img,
+.footerNavItem button {
+  vertical-align: middle;
+}
+.footer-navItem img {
+  height: 40px; /* Set the height to a value smaller than .header height */
+}
+
+.footerlogo {
+  display: flex;
+  align-items: center;
+}
+
+.footerlogoImage {
+  width: 100px;
+  height: auto;
+}

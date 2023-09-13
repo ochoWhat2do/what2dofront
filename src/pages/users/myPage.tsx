@@ -4,6 +4,7 @@ import Header from '../components/Header'
 import { getCookie, setCookie } from '../../utils/cookie'
 import { useRouter } from 'next/router'
 import styles from '../../styles/myPage.module.css' // Import myPage.module.css
+import Footer from '../components/Footer'
 
 interface Store {
   id: number
@@ -260,6 +261,7 @@ const MyPage = () => {
           </ul>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
