@@ -27,6 +27,7 @@ interface Review {
   createdAt: Date
   likeCount: number
   createEmail: string
+  createNickname: string
   rate: number
   // 기타 리뷰 객체의 필드들을 여기에 추가합니다.
 }
@@ -58,23 +59,12 @@ export default function Home() {
   const [mapScript, setMapScript] = useState<HTMLScriptElement | null>(null)
   const [places, setPlaces] = useState<any[]>([])
   const [isFavorite, setIsFavorite] = useState<boolean | null>(null) // 찜 상태 추가
+  const [reviewPageLength, setReviewPageLength] = useState(1) // 초기값은 1로 설정
+  const [reviewCurrentPage, setReviewCurrentPage] = useState<number>(1) // 초기값은 1로 설정
+  const [isLoadingMore, setIsLoadingMore] = useState(false) // 추가 데이터 로딩 상태
 
   useEffect(() => {
     getStore()
-    // mapScript를 생성하고 동적으로 스크립트를 추가하는 함수(카카오)
-    const createMapScript = () => {
-      const script = document.createElement('script')
-      script.async = true
-      const clientId = KAKAOVALUE.JAVASCRIPT_KEY
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${clientId}&autoload=false&libraries=services,clusterer,drawing`
-      document.head.appendChild(script)
-      setMapScript(script) // 스크립트 엘리먼트를 상태로 설정
-    }
-
-    if (typeof window !== 'undefined') {
-      // 클라이언트 사이드에서만 실행되도록 조건 추가
-      createMapScript()
-    }
   }, [])
 
   const getStore = async () => {
@@ -89,7 +79,6 @@ export default function Home() {
       })
       setStoreModel(response.data) // Set the fetched data to the state
       if (response.data) {
-        debugger
         if (response.data.favoriteYn) {
           setIsFavorite(true)
         } else {
@@ -103,6 +92,21 @@ export default function Home() {
           keyword: searchQuery?.toString() || '',
         })
       }
+
+      // mapScript를 생성하고 동적으로 스크립트를 추가하는 함수(카카오)
+      const createMapScript = () => {
+        const script = document.createElement('script')
+        script.async = true
+        const clientId = KAKAOVALUE.JAVASCRIPT_KEY
+        script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${clientId}&autoload=false&libraries=services,clusterer,drawing`
+        document.head.appendChild(script)
+        setMapScript(script) // 스크립트 엘리먼트를 상태로 설정
+      }
+
+      if (typeof window !== 'undefined') {
+        // 클라이언트 사이드에서만 실행되도록 조건 추가
+        createMapScript()
+      }
     } catch (error) {
       console.error('Error fetching store:', error)
     }
@@ -110,6 +114,7 @@ export default function Home() {
 
   useEffect(() => {
     if (storeModel) {
+      setReviewCurrentPage(1)
       getReviews()
     }
   }, [storeModel])
@@ -120,7 +125,7 @@ export default function Home() {
         `${apiBaseUrl}/api/stores/${storeModel?.id}/reviews`,
         {
           params: {
-            page: 1,
+            page: reviewCurrentPage,
             size: 10,
             sortBy: 'createdAt',
             isAsc: false,
@@ -131,10 +136,11 @@ export default function Home() {
         },
       )
 
-      const reviewList = response.data
-
-      // Update the state with the reviewElements
-      setReviewList(reviewList)
+      const reviewPagingList = response.data
+      if (reviewPagingList) {
+        setReviewPageLength(reviewPagingList.pageCount)
+        setReviewList(reviewPagingList.reviewList)
+      }
     } catch (error) {
       console.error('Error fetching 리뷰:', error)
     }
@@ -242,44 +248,6 @@ export default function Home() {
     }
   }, [mapScript, mapData, setInfowindow])
 
-  // const handleFavoriteClick = async () => {
-  //   // 이미 좋아요가 된 상태라면
-  //   if (isFavorite) {
-  //     try {
-  //       // 요청 보내기
-  //       const response = await axios.delete(
-  //         `${apiBaseUrl}/api/stores/${storeModel?.id}/storefavorites`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${auth}`,
-  //           },
-  //         },
-  //       )
-  //     } catch (error) {
-  //       // 오류 처리
-  //       console.error('가게 취소 요청 실패:', error)
-  //     }
-  //   } else {
-  //     !isFavorite
-  //     try {
-  //       // 요청 보내기
-  //       const response = await axios.post(
-  //         `${apiBaseUrl}/api/stores/${storeModel?.id}/storefavoritess`,
-  //         null, // 데이터가 없는 경우 null로 설정
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${auth}`,
-  //           },
-  //         },
-  //       )
-  //     } catch (error) {
-  //       // 오류 처리
-  //       console.error('좋아요 요청 실패:', error)
-  //     }
-  //   }
-  //   setIsFavorite(!isFavorite)
-  // }
-
   const handleFavoriteClick = async () => {
     // 현재 찜 상태를 반대로 설정하여 토글
     try {
@@ -309,6 +277,35 @@ export default function Home() {
       console.error('Error updating favorite status:', error)
     }
     setIsFavorite(!isFavorite)
+  }
+
+  // 리뷰 더 보기 버튼 클릭 시 실행되는 함수
+  const handleLoadMoreReviews = async () => {
+    setIsLoadingMore(true) // 로딩 중 상태로 변경
+    try {
+      const response = await axios.get(
+        `${apiBaseUrl}/api/stores/${storeModel?.id}/reviews`,
+        {
+          params: {
+            page: reviewCurrentPage + 1, // 다음 페이지 요청
+            size: 10,
+            sortBy: 'createdAt',
+            isAsc: false,
+          },
+          headers: {
+            Authorization: bearer + auth,
+          },
+        },
+      )
+
+      const newReviews = response.data.reviewList
+      setReviewList((prevReviews) => [...prevReviews, ...newReviews]) // 새로운 리뷰를 기존 리뷰 목록에 추가
+      setReviewCurrentPage((prevPage) => prevPage + 1) // 현재 페이지 업데이트
+    } catch (error) {
+      console.error('Error fetching more reviews:', error)
+    } finally {
+      setIsLoadingMore(false) // 로딩 완료 상태로 변경
+    }
   }
 
   return (
@@ -383,7 +380,7 @@ export default function Home() {
                       className={`${styles.reviewcreateEmail} ${styles.label}`}
                     >
                       <span className={styles.label}>작성자:</span>{' '}
-                      {review.createEmail}
+                      {review.createNickname}
                     </p>
                     <p className={styles.reviewContent}>{review.content}</p>
                     <p className={styles.reviewDate}>

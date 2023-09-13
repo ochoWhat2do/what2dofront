@@ -19,6 +19,8 @@ const Profile = () => {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
   const [introduction, setIntroduction] = useState('')
+  const [defaultPicture, setDefaultPicture] = useState('')
+  const [socialType, setSocialType] = useState('')
   const [selectedPicture, setselectedPicture] = useState<null | File>(
     null as File | null,
   )
@@ -37,10 +39,14 @@ const Profile = () => {
         },
       })
 
-      setPicture(response.data.picture)
+      if (response.data.picture) {
+        setPicture(response.data.picture)
+        setDefaultPicture(response.data.picture)
+      }
       setIntroduction(response.data.introduction)
       setNickName(response.data.nickname)
       setEmail(response.data.email)
+      setSocialType(response.data.socialType)
     } catch (error) {
       console.error('Error fetching profile:', error)
     }
@@ -55,10 +61,28 @@ const Profile = () => {
       }
       reader.readAsDataURL(e.target.files[0])
       setselectedPicture(e.target.files[0])
+      setDefaultPicture('')
     }
   }
 
   const handleEditProfile = () => {
+    if (!socialType || socialType === 'NONE') {
+      if (password === '') {
+        window.alert('비밀번호를 입력하여 주세요.')
+        return
+      }
+    }
+
+    if (nickname === '') {
+      window.alert('닉네임을 입력하여 주세요.')
+      return
+    }
+
+    if (picture === '' && !selectedPicture) {
+      window.alert('프로필 이미지를 등록하여 주세요.')
+      return
+    }
+
     const shouldEdit = window.confirm('프로필을 수정하시겠습니까?')
     if (shouldEdit) {
       editProfile()
@@ -84,6 +108,7 @@ const Profile = () => {
         introduction: introduction,
         password: password,
         nickname: nickname,
+        defaultPicture: defaultPicture,
       }
 
       formData.append(
@@ -177,17 +202,19 @@ const Profile = () => {
             onChange={(e) => setIntroduction(e.target.value)}
           />
         </div>
-        <div className={styles['profile-input-container']}>
-          <div className="profile-id-label">비밀번호</div>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            className={styles['profile-input-box']}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        {(!socialType || socialType === 'NONE') && (
+          <div className={styles['profile-input-container']}>
+            <div className="profile-id-label">비밀번호</div>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              className={styles['profile-input-box']}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+        )}
         <div className={styles['profile-input-container']}>
           <div className="profile-id-label">프로필 사진</div>
           <div className={styles['profile-image-container']}>

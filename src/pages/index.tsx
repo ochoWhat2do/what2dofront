@@ -30,11 +30,13 @@ export default function Home() {
   const [selectedOption, setSelectedOption] = useState('keyword') // 초기 선택값
   const [pageLength, setPageLength] = useState(1) // 초기값은 1로 설정
   const [currentPage, setCurrentPage] = useState<number>(1) // 초기값은 1로 설정
+  const [storeListByReview, setStoreListByReview] = useState<Store[]>([]) // Updated state
 
   useEffect(() => {
     if (auth) {
       setSearchQuery(query)
       getStoreList(query)
+      getStoreListByReview()
     }
   }, [])
 
@@ -143,7 +145,6 @@ export default function Home() {
   }
 
   const handlePageChange = (pageNumber: number) => {
-    debugger
     if (pageNumber < 1 || pageNumber > pageLength) {
       return // 페이지 번호가 유효 범위를 벗어나면 아무 작업도 하지 않음
     }
@@ -158,6 +159,30 @@ export default function Home() {
       getStoreListByCategory(searchQuery)
     }
   }, [currentPage])
+
+  // const handleStoreListByReview = () => {
+  //   router.push('/store/storeListByReview')
+  // }
+
+  const getStoreListByReview = async () => {
+    try {
+      const response = await axios.get(`${apiBaseUrl}/api/stores/list-review`, {
+        params: {
+          page: 1,
+          size: 5,
+          sortBy: 'createdAt',
+          isAsc: false,
+        },
+        headers: {
+          Authorization: bearer + auth,
+        },
+      })
+
+      setStoreListByReview(response.data) // Set the fetched data to the state
+    } catch (error) {
+      console.error('Error fetching profile:', error)
+    }
+  }
 
   return (
     <div>
@@ -236,6 +261,38 @@ export default function Home() {
                   ),
                 )}
               </div>
+            ) : (
+              <p>검색된 가게가 없습니다.</p>
+            )}
+          </div>
+          <div>리뷰가 많은 맛집</div>
+          <div className={`flex flex-wrap ${styles['flex-store']}`}>
+            {storeListByReview && storeListByReview.length > 0 ? (
+              storeListByReview.map((store, index) => (
+                <div key={index} className="w-1/3">
+                  {/* Adjusted class here */}
+                  <section className="box feature">
+                    <img
+                      src={store.picture || 'images/not_found_square.png'}
+                      alt=""
+                      onClick={() => handleViewStore(store.storeKey)}
+                    />
+                    <div className="inner">
+                      <input
+                        type="hidden"
+                        data-id={`list${index}`}
+                        value={store.storeKey}
+                      />
+                      <header>
+                        <h2>{store.title}</h2>
+                      </header>
+                      <p>{store.category}</p>
+                      <br />
+                      <p>{store.address}</p>
+                    </div>
+                  </section>
+                </div>
+              ))
             ) : (
               <p>검색된 가게가 없습니다.</p>
             )}

@@ -138,7 +138,6 @@ const MyPage = () => {
   }
 
   const handlePasswordChange = async () => {
-    debugger
     if (!password || !newPassword || !newPasswordConfirm) {
       setMessage('비밀번호를 모두 입력해주세요.')
       return
@@ -176,7 +175,7 @@ const MyPage = () => {
   return (
     <div>
       <Header />
-      <div className={styles['MyPage-form']}>
+      <div className={styles['myPageForm']}>
         {' '}
         <h2 className={styles.h2}>마이페이지</h2>
         <div className={styles.passwordChangeForm}>
