@@ -59,20 +59,6 @@ export default function Home() {
 
   useEffect(() => {
     getStore()
-    // mapScript를 생성하고 동적으로 스크립트를 추가하는 함수(카카오)
-    const createMapScript = () => {
-      const script = document.createElement('script')
-      script.async = true
-      const clientId = KAKAOVALUE.JAVASCRIPT_KEY
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${clientId}&autoload=false&libraries=services,clusterer,drawing`
-      document.head.appendChild(script)
-      setMapScript(script) // 스크립트 엘리먼트를 상태로 설정
-    }
-
-    if (typeof window !== 'undefined') {
-      // 클라이언트 사이드에서만 실행되도록 조건 추가
-      createMapScript()
-    }
   }, [])
 
   const getStore = async () => {
@@ -94,6 +80,20 @@ export default function Home() {
           title: response.data.title,
           keyword: searchQuery?.toString() || '',
         })
+        // mapScript를 생성하고 동적으로 스크립트를 추가하는 함수(카카오)
+        const createMapScript = () => {
+          const script = document.createElement('script')
+          script.async = true
+          const clientId = KAKAOVALUE.JAVASCRIPT_KEY
+          script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${clientId}&autoload=false&libraries=services,clusterer,drawing`
+          document.head.appendChild(script)
+          setMapScript(script) // 스크립트 엘리먼트를 상태로 설정
+        }
+
+        if (typeof window !== 'undefined') {
+          // 클라이언트 사이드에서만 실행되도록 조건 추가
+          createMapScript()
+        }
       }
     } catch (error) {
       console.error('Error fetching store:', error)
@@ -167,7 +167,7 @@ export default function Home() {
             center: new window.kakao.maps.LatLng(latitude, longitude),
             level: 3,
           }
-
+        debugger
         const map = new window.kakao.maps.Map(mapContainer, mapOption)
         const markerPosition = new window.kakao.maps.LatLng(latitude, longitude)
 
