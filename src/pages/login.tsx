@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import { setCookie } from '../utils/cookie'
 import { useRouter } from 'next/router'
 import styles from '../styles/login.module.css' // Import login.module.css
@@ -121,6 +122,7 @@ const Login = () => {
           Sign in with Naver
         </a> */}
       </div>
+      <Footer />
     </div>
   )
 }

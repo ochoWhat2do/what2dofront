@@ -4,6 +4,7 @@ import axios from 'axios'
 import { getCookie, setCookie } from '../utils/cookie'
 import { useRouter } from 'next/router'
 import styles from '../styles/index.module.css'
+import Footer from './components/Footer'
 
 interface Store {
   title: string
@@ -188,7 +189,9 @@ export default function Home() {
               />
             </button>
           </div>
-          <div className={`flex flex-wrap ${styles['flex-store']}`}>
+          <div
+            className={`flex flex-wrap ${styles['flex-store']} scrollable-content`}
+          >
             {storeList.length > 0 ? (
               storeList.map((store, index) => (
                 <div key={index} className="w-1/3">
@@ -241,6 +244,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

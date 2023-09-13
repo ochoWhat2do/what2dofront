@@ -7,6 +7,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import ImageUploader from '../../utils/imageUploader'
 import StarRating from '../../utils/starRating'
+import Footer from '../components/Footer'
 
 interface Review {
   id: number
@@ -180,6 +181,7 @@ const reviewDetailPage = () => {
         </div>
         <p>{message}</p>
       </div>
+      <Footer />
     </div>
   )
 }

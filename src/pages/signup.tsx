@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import axios from 'axios'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import styles from '../styles/signup.module.css'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 const Signup = () => {
   const router = useRouter()
@@ -158,144 +160,153 @@ const Signup = () => {
 
   return (
     <div>
-      <Header /> {/* Render the Header component here */}
-      <div className={styles['signup-form']}>
-        <div className={styles['signup-title']}>회원가입</div>
-        <div className={styles['signup-input-container']}>
-          <div className="signup-id-label">이메일</div>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className={styles['signup-input-box']}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onBlur={handleEmailBlur} // Call email validation on blur
-          />
-        </div>
-        <div>
-          <div>
-            <button
-              className={styles['send-verification-button']}
-              onClick={sendVerificationCode}
-            >
-              인증번호 전송
-            </button>
-          </div>
-          {isVerificationCodeSent && (
-            <div
-              className={`${styles['email-verification-box']} ${
-                isValidCode ? 'email-code-hidden' : ''
-              }`}
-            >
-              <input
-                type="text"
-                placeholder="인증번호 입력"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-                onBlur={handleVerificationCodeBlur}
-              />
-            </div>
-          )}
-        </div>
-        <div className={styles['signup-input-container']}>
-          <div className="signup-id-label">비밀번호</div>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            className={styles['signup-input-box']}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div className={styles['signup-input-container']}>
-          <div className="signup-id-label">비밀번호확인</div>
-          <input
-            type="password"
-            name="password_confirm"
-            id="password_confirm"
-            className={styles['signup-input-box']}
-            value={password_confirm}
-            onBlur={() => {
-              if (password !== password_confirm) {
-                setPasswordMismatch(true)
-              } else {
-                setPasswordMismatch(false)
-              }
-            }}
-            onChange={(e) => {
-              setPasswordConfirm(e.target.value)
-            }}
-          />
-          {passwordMismatch && (
-            <p style={{ color: 'red' }}>
-              비밀번호와 비밀번호 확인의 내용이 다릅니다.
-            </p>
-          )}
-        </div>
-        <div className={styles['signup-input-container']}>
-          <div className="signup-id-label">닉네임</div>
-          <input
-            type="text"
-            name="nickname"
-            id="nickname"
-            className={styles['signup-input-box']}
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
-        </div>
-        <div className={styles['signup-input-container']}>
-          <div className="signup-id-label">도시</div>
-          <input
-            type="text"
-            name="city"
-            id="city"
-            className={styles['signup-input-box']}
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          />
-        </div>
-        <div className={styles['signup-input-container']}>
-          <div className="signup-id-label">성별</div>
-          <select
-            name="gender"
-            id="gender"
-            className={styles['signup-input-box']}
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-          >
-            <option value="">선택하세요</option>
-            <option value="male">남성</option>
-            <option value="female">여성</option>
-          </select>
-        </div>
-        <div className={styles['signup-admin-box']}>
-          <label>
+      <Head>
+        <script
+          src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+          async
+        />
+      </Head>
+      <div>
+        <Header /> {/* Render the Header component here */}
+        <div className={styles['signup-form']}>
+          <div className={styles['signup-title']}>회원가입</div>
+          <div className={styles['signup-input-container']}>
+            <div className="signup-id-label">이메일</div>
             <input
-              type="checkbox"
-              id="admin-check"
-              name="admin"
-              onChange={handleAdminCheckbox}
-              style={{ marginTop: '20px' }}
+              type="email"
+              name="email"
+              id="email"
+              className={styles['signup-input-box']}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={handleEmailBlur} // Call email validation on blur
             />
-            사장님(판매자)
-          </label>
-          {isAdmin && (
+          </div>
+          <div>
+            <div>
+              <button
+                className={styles['send-verification-button']}
+                onClick={sendVerificationCode}
+              >
+                인증번호 전송
+              </button>
+            </div>
+            {isVerificationCodeSent && (
+              <div
+                className={`${styles['email-verification-box']} ${
+                  isValidCode ? 'email-code-hidden' : ''
+                }`}
+              >
+                <input
+                  type="text"
+                  placeholder="인증번호 입력"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value)}
+                  onBlur={handleVerificationCodeBlur}
+                />
+              </div>
+            )}
+          </div>
+          <div className={styles['signup-input-container']}>
+            <div className="signup-id-label">비밀번호</div>
             <input
               type="password"
-              id="admin-token"
-              name="adminToken"
-              placeholder="사장님 키"
+              name="password"
+              id="password"
               className={styles['signup-input-box']}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
-          )}
+          </div>
+          <div className={styles['signup-input-container']}>
+            <div className="signup-id-label">비밀번호확인</div>
+            <input
+              type="password"
+              name="password_confirm"
+              id="password_confirm"
+              className={styles['signup-input-box']}
+              value={password_confirm}
+              onBlur={() => {
+                if (password !== password_confirm) {
+                  setPasswordMismatch(true)
+                } else {
+                  setPasswordMismatch(false)
+                }
+              }}
+              onChange={(e) => {
+                setPasswordConfirm(e.target.value)
+              }}
+            />
+            {passwordMismatch && (
+              <p style={{ color: 'red' }}>
+                비밀번호와 비밀번호 확인의 내용이 다릅니다.
+              </p>
+            )}
+          </div>
+          <div className={styles['signup-input-container']}>
+            <div className="signup-id-label">닉네임</div>
+            <input
+              type="text"
+              name="nickname"
+              id="nickname"
+              className={styles['signup-input-box']}
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+            />
+          </div>
+          <div className={styles['signup-input-container']}>
+            <div className="signup-id-label">도시</div>
+            <input
+              type="text"
+              name="city"
+              id="city"
+              className={styles['signup-input-box']}
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+          </div>
+          <div className={styles['signup-input-container']}>
+            <div className="signup-id-label">성별</div>
+            <select
+              name="gender"
+              id="gender"
+              className={styles['signup-input-box']}
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+            >
+              <option value="">선택하세요</option>
+              <option value="male">남성</option>
+              <option value="female">여성</option>
+            </select>
+          </div>
+          <div className={styles['signup-admin-box']}>
+            <label>
+              <input
+                type="checkbox"
+                id="admin-check"
+                name="admin"
+                onChange={handleAdminCheckbox}
+                style={{ marginTop: '20px' }}
+              />
+              사장님(판매자)
+            </label>
+            {isAdmin && (
+              <input
+                type="password"
+                id="admin-token"
+                name="adminToken"
+                placeholder="사장님 키"
+                className={styles['signup-input-box']}
+              />
+            )}
+          </div>
+          <button className={styles['signup-id-submit']} onClick={handleSignup}>
+            회원가입
+          </button>
+          <p>{message}</p>
         </div>
-        <button className={styles['signup-id-submit']} onClick={handleSignup}>
-          회원가입
-        </button>
-        <p>{message}</p>
       </div>
+      <Footer />
     </div>
   )
 }

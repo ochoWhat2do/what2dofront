@@ -5,6 +5,7 @@ import styles from '../../styles/reviewDetail.module.css'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import Footer from '../components/Footer'
 
 interface Review {
   id: number
@@ -428,6 +429,7 @@ const reviewDetailPage = () => {
           {/* 별도의 컨텐츠를 추가하세요 */}
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
