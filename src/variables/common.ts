@@ -1,4 +1,5 @@
 import { KAKAO as KAKAO_CONFIG } from './kakaoKey'
+import { GOOGLE as GOOGLE_CONFIG } from './googleKey'
 
 const KAKAO = {
   LOGIN_URL: KAKAO_CONFIG.LOGIN_URL,
@@ -8,4 +9,9 @@ const KAKAO = {
   JAVASCRIPT_KEY: KAKAO_CONFIG.JAVASCRIPT_KEY,
 }
 
-export { KAKAO }
+const GOOGLE = {
+  LOGIN_URL: GOOGLE_CONFIG.LOGIN_URL,
+  CLIENT_ID: GOOGLE_CONFIG.CLIENT_ID,
+}
+
+export { KAKAO, GOOGLE }

@@ -5,7 +5,7 @@ import Footer from './components/Footer'
 import { setCookie } from '../utils/cookie'
 import { useRouter } from 'next/router'
 import styles from '../styles/login.module.css' // Import login.module.css
-import { KAKAO } from '../variables/common'
+import { KAKAO, GOOGLE } from '../variables/common'
 
 const Login = () => {
   const router = useRouter()
@@ -24,6 +24,20 @@ const Login = () => {
         process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL ||
         'https://www.what2do.co.kr/oauth/kakao' // 개발
       window.location.href = `${KAKAO.LOGIN_URL}?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`
+    } catch (error) {
+      setMessage('로그인 중 오류가 발생했습니다.')
+    }
+  }
+
+  // 구글 로그인 시작
+  const handleGoogleLogin = async () => {
+    try {
+      // 구글 로그인 페이지로 리다이렉트
+      const client_id = KAKAO.CLIENT_ID
+      const redirect_uri =
+        process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URL ||
+        'https://www.what2do.co.kr/oauth/google' // 개발
+      window.location.href = `${GOOGLE.LOGIN_URL}?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code&scope=email profile`
     } catch (error) {
       setMessage('로그인 중 오류가 발생했습니다.')
     }
@@ -95,15 +109,27 @@ const Login = () => {
           로그인
         </button>
         <p>{message}</p>
-        <div className={styles['social-login']}>
-          <button onClick={handleKakaoLogin}>
-            <img
-              className={styles['kakao-logo']}
-              src="/images/kakao-logo.png"
-              alt="Kakao"
-            />{' '}
-            Kakao 로그인
-          </button>
+        <div className={styles['social-container']}>
+          <div className={styles['social-login']}>
+            <button onClick={handleKakaoLogin}>
+              <img
+                className={styles['kakao-logo']}
+                src="/images/kakao-logo.png"
+                alt="Kakao"
+              />{' '}
+              Kakao 로그인
+            </button>
+          </div>
+          {/* <div className={styles['social-login']}>
+            <button onClick={handleGoogleLogin}>
+              <img
+                className={styles['google-logo']}
+                src="/images/google-logo.png"
+                alt="Google"
+              />{' '}
+              Google 로그인
+            </button>
+          </div> */}
         </div>
         {/* <a className="btn btn-block social-btn google" href="#">
           <img

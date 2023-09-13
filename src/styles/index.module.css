@@ -6,9 +6,9 @@
 }
 
 .searchBox {
-  display: flex; /* Flexbox 사용 */
-  align-items: center; /* 수직 가운데 정렬 */
-  justify-content: center; /* 가로 가운데 정렬을 위한 스타일 추가 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   padding: 40px;
   border: 2px solid purple;
@@ -31,6 +31,32 @@
   background-color: transparent;
   border: none;
   cursor: pointer;
+}
+
+/* 화면 너비가 768px 이하인 경우 스타일 조정 */
+@media (max-width: 768px) {
+  .searchBox {
+    margin: 20px 50px; /* 좌우 여백 조정 */
+    padding: 10px;
+  }
+
+  .searchBox input {
+    width: 80%; /* 입력 필드 너비를 80%로 조정 */
+    max-width: 300px; /* 최대 너비 설정 */
+  }
+}
+
+/* 화면 너비가 480px 이하인 경우 스타일 조정 */
+@media (max-width: 480px) {
+  .searchBox {
+    margin: 20px 20px; /* 좌우 여백을 더 줄임 */
+    padding: 10px;
+  }
+
+  .searchBox input {
+    width: 100%; /* 입력 필드 너비를 100%로 조정하여 가득 채우도록 함 */
+    max-width: 100%; /* 최대 너비 설정 */
+  }
 }
 
 .flex-store {
