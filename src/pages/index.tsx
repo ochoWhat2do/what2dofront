@@ -87,7 +87,7 @@ export default function Home() {
       return
     }
 
-    // 검색어에 "맛집" 또는 "까페"가 포함되어 있는지 확인
+    // 검색어에 "맛집" 포함여부 확인
     if (!words.some((word) => ['맛집'].includes(word))) {
       window.alert("검색어에 '맛집'을 포함해야 합니다.")
       return
