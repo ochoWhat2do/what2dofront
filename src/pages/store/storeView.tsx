@@ -168,7 +168,7 @@ export default function Home() {
             center: new window.kakao.maps.LatLng(latitude, longitude),
             level: 3,
           }
-        debugger
+
         const map = new window.kakao.maps.Map(mapContainer, mapOption)
         const markerPosition = new window.kakao.maps.LatLng(latitude, longitude)
 

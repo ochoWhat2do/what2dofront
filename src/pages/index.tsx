@@ -189,9 +189,7 @@ export default function Home() {
               />
             </button>
           </div>
-          <div
-            className={`flex flex-wrap ${styles['flex-store']} scrollable-content`}
-          >
+          <div className={`flex flex-wrap ${styles['flex-store']}`}>
             {storeList.length > 0 ? (
               storeList.map((store, index) => (
                 <div key={index} className="w-1/3">
