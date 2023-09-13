@@ -35,12 +35,10 @@ const Footer = () => {
         </div>
         <nav className={styles.nav}>
           <ul>
-            {
-              <>
-                {privacyButtons}
-                {policyButtons}
-              </>
-            }
+            <>
+              {privacyButtons}
+              {policyButtons}
+            </>
           </ul>
         </nav>
         <div className={styles.companyInfo}>
