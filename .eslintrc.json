@@ -76,6 +76,7 @@
     "import/no-duplicates": "off", // import/no-duplicates 규칙 끄기
     "react/require-default-props": "off",
     "react/default-props-match-prop-types": "off",
+    "react/no-unescaped-entities": 0,
     "consistent-return": "off", // consistent-return 룰 비활성화
     "func-names": "off",
     "no-alert": "off", // no-alert 규칙 끄기
