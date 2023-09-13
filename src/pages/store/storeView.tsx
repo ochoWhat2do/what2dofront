@@ -6,7 +6,6 @@ import { getCookie, setCookie } from '../../utils/cookie'
 import styles from '../../styles/storeView.module.css'
 import Link from 'next/link'
 import { KAKAO as KAKAOVALUE } from '../../variables/common'
-import Footer from '../components/Footer'
 
 interface Store {
   id: number
@@ -19,6 +18,7 @@ interface Store {
   longitude: string
   picture: string
   storeKey: string
+  isFavorite: boolean
 }
 interface Review {
   id: number
@@ -57,9 +57,24 @@ export default function Home() {
   })
   const [mapScript, setMapScript] = useState<HTMLScriptElement | null>(null)
   const [places, setPlaces] = useState<any[]>([])
+  const [isFavorite, setIsFavorite] = useState<boolean | null>(null) // 찜 상태 추가
 
   useEffect(() => {
     getStore()
+    // mapScript를 생성하고 동적으로 스크립트를 추가하는 함수(카카오)
+    const createMapScript = () => {
+      const script = document.createElement('script')
+      script.async = true
+      const clientId = KAKAOVALUE.JAVASCRIPT_KEY
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${clientId}&autoload=false&libraries=services,clusterer,drawing`
+      document.head.appendChild(script)
+      setMapScript(script) // 스크립트 엘리먼트를 상태로 설정
+    }
+
+    if (typeof window !== 'undefined') {
+      // 클라이언트 사이드에서만 실행되도록 조건 추가
+      createMapScript()
+    }
   }, [])
 
   const getStore = async () => {
@@ -74,6 +89,12 @@ export default function Home() {
       })
       setStoreModel(response.data) // Set the fetched data to the state
       if (response.data) {
+        debugger
+        if (response.data.favoriteYn) {
+          setIsFavorite(true)
+        } else {
+          setIsFavorite(false)
+        }
         setMapData({
           address: response.data.address, // storeModel의 address 필드를 추가합니다.
           latitude: response.data.latitude, // storeModel의 latitude 필드를 추가합니다.
@@ -81,20 +102,6 @@ export default function Home() {
           title: response.data.title,
           keyword: searchQuery?.toString() || '',
         })
-        // mapScript를 생성하고 동적으로 스크립트를 추가하는 함수(카카오)
-        const createMapScript = () => {
-          const script = document.createElement('script')
-          script.async = true
-          const clientId = KAKAOVALUE.JAVASCRIPT_KEY
-          script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${clientId}&autoload=false&libraries=services,clusterer,drawing`
-          document.head.appendChild(script)
-          setMapScript(script) // 스크립트 엘리먼트를 상태로 설정
-        }
-
-        if (typeof window !== 'undefined') {
-          // 클라이언트 사이드에서만 실행되도록 조건 추가
-          createMapScript()
-        }
       }
     } catch (error) {
       console.error('Error fetching store:', error)
@@ -235,6 +242,75 @@ export default function Home() {
     }
   }, [mapScript, mapData, setInfowindow])
 
+  // const handleFavoriteClick = async () => {
+  //   // 이미 좋아요가 된 상태라면
+  //   if (isFavorite) {
+  //     try {
+  //       // 요청 보내기
+  //       const response = await axios.delete(
+  //         `${apiBaseUrl}/api/stores/${storeModel?.id}/storefavorites`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${auth}`,
+  //           },
+  //         },
+  //       )
+  //     } catch (error) {
+  //       // 오류 처리
+  //       console.error('가게 취소 요청 실패:', error)
+  //     }
+  //   } else {
+  //     !isFavorite
+  //     try {
+  //       // 요청 보내기
+  //       const response = await axios.post(
+  //         `${apiBaseUrl}/api/stores/${storeModel?.id}/storefavoritess`,
+  //         null, // 데이터가 없는 경우 null로 설정
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${auth}`,
+  //           },
+  //         },
+  //       )
+  //     } catch (error) {
+  //       // 오류 처리
+  //       console.error('좋아요 요청 실패:', error)
+  //     }
+  //   }
+  //   setIsFavorite(!isFavorite)
+  // }
+
+  const handleFavoriteClick = async () => {
+    // 현재 찜 상태를 반대로 설정하여 토글
+    try {
+      if (isFavorite) {
+        // 찜하기 취소
+        const response = await axios.delete(
+          `${apiBaseUrl}/api/stores/${storeModel?.id}/storefavorites`,
+          {
+            headers: {
+              Authorization: `Bearer ${auth}`,
+            },
+          },
+        )
+      } else {
+        // 찜하기
+        const response = await axios.post(
+          `${apiBaseUrl}/api/stores/${storeModel?.id}/storefavorites`,
+          null, // 데이터가 없는 경우 null로 설정
+          {
+            headers: {
+              Authorization: `Bearer ${auth}`,
+            },
+          },
+        )
+      }
+    } catch (error) {
+      console.error('Error updating favorite status:', error)
+    }
+    setIsFavorite(!isFavorite)
+  }
+
   return (
     <div>
       <Header />
@@ -275,6 +351,17 @@ export default function Home() {
                   <p className={styles.storeHomePageLink}>
                     가게 링크: {storeModel.homePageLink}
                   </p>
+                  <img
+                    src={
+                      isFavorite
+                        ? '/images/favorite_filled.png'
+                        : '/images/favorite_empty.png'
+                    }
+                    alt="찜하기"
+                    className={styles.favoriteIcon}
+                    style={{ cursor: 'pointer' }}
+                    onClick={handleFavoriteClick}
+                  />
                 </div>
               </div>
             )}
@@ -316,7 +403,6 @@ export default function Home() {
           <div id="map" className={styles.kakaoMap} />
         </div>
       </div>
-      <Footer />
     </div>
   )
 }
