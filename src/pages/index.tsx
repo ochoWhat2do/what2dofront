@@ -25,9 +25,10 @@ export default function Home() {
   const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080'
   const auth = getCookie('authorization')
   const query = '강남구 맛집' // Replace with the actual query
-  const page = '1' // Replace with the actual page
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedOption, setSelectedOption] = useState('keyword') // 초기 선택값
+  const [pageLength, setPageLength] = useState(1) // 초기값은 1로 설정
+  const [currentPage, setCurrentPage] = useState<number>(1) // 초기값은 1로 설정
 
   useEffect(() => {
     if (auth) {
@@ -61,12 +62,15 @@ export default function Home() {
       const response = await axios.get(`${apiBaseUrl}/api/daum/search`, {
         params: {
           query: searchQuery,
-          page: page,
+          page: currentPage,
         },
         headers: {
           Authorization: bearer + auth,
         },
       })
+      setPageLength(
+        Math.ceil(response.data.pageCnt / response.data.storeList.length),
+      ) // 15는 페이지당 게시글 수
       setStoreList(response.data.storeList) // Set the fetched data to the state
     } catch (error) {
       console.error('Error fetching profile:', error)
@@ -108,7 +112,7 @@ export default function Home() {
       const response = await axios.get(`${apiBaseUrl}/api/stores/search`, {
         params: {
           category: categoryQuery,
-          page: page,
+          page: currentPage,
         },
         headers: {
           Authorization: bearer + auth,
@@ -137,6 +141,23 @@ export default function Home() {
     }
   }
 
+  const handlePageChange = (pageNumber: number) => {
+    debugger
+    if (pageNumber < 1 || pageNumber > pageLength) {
+      return // 페이지 번호가 유효 범위를 벗어나면 아무 작업도 하지 않음
+    }
+    setCurrentPage(pageNumber)
+  }
+
+  // currentPage와 selectedOption가 변경될 때마다 getStoreList 실행
+  useEffect(() => {
+    if (selectedOption === 'keyword') {
+      getStoreList(searchQuery)
+    } else if (selectedOption === 'category') {
+      getStoreListByCategory(searchQuery)
+    }
+  }, [currentPage])
+
   return (
     <div>
       <Header />
@@ -155,7 +176,7 @@ export default function Home() {
             </select>
             <input
               type="text"
-              placeholder="검색어를 입력하세요(검색 형식: 지역명+맛집(까페))"
+              placeholder="검색어를 입력하세요(검색 형식: 지역명+맛집)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -194,6 +215,26 @@ export default function Home() {
                   </section>
                 </div>
               ))
+            ) : (
+              <p>검색된 가게가 없습니다.</p>
+            )}
+            {storeList.length > 0 ? (
+              <div className={styles.storePagingBox}>
+                {Array.from({ length: pageLength }, (_, i) => i + 1).map(
+                  (pageNumber) => (
+                    <span
+                      key={pageNumber}
+                      className={`${styles.pagenum} ${
+                        pageNumber === currentPage ? styles.active : ''
+                      }`}
+                      onClick={() => handlePageChange(pageNumber)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {pageNumber}
+                    </span>
+                  ),
+                )}
+              </div>
             ) : (
               <p>검색된 가게가 없습니다.</p>
             )}
