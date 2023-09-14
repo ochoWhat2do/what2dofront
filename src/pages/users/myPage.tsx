@@ -57,12 +57,19 @@ const MyPage = () => {
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('')
+  const [reviewPageLength, setReviewPageLength] = useState(1) // 초기값은 1로 설정
+  const [reviewCurrentPage, setReviewCurrentPage] = useState<number>(1) // 초기값은 1로 설정
   const user_info = getCookie('user_info')
 
   useEffect(() => {
     getReiviews()
     getMyStores()
   }, [])
+
+  // currentPage가 변경될 때마다 getReiviews 실행
+  useEffect(() => {
+    getReiviews()
+  }, [reviewCurrentPage])
 
   const getReiviews = async () => {
     try {
@@ -82,7 +89,8 @@ const MyPage = () => {
         },
       )
       console.log(response.data)
-      const reviewList = response.data
+      setReviewPageLength(response.data.pageCount) // 페이지당 게시글 수
+      const reviewList = response.data.reviewList
 
       // Update the state with the reviewElements
       setReviewList(reviewList)
@@ -105,7 +113,6 @@ const MyPage = () => {
           },
         },
       )
-      console.log(response.data)
       setStoreList(response.data.storeFavoriteList) // Set the fetched data to the state
     } catch (error) {
       console.error('Error fetching 가게 목록:', error)
@@ -172,6 +179,14 @@ const MyPage = () => {
     }
   }
 
+  const handleReviewPageChange = (pageNumber: number) => {
+    debugger
+    if (pageNumber < 1 || pageNumber > reviewPageLength) {
+      return // 페이지 번호가 유효 범위를 벗어나면 아무 작업도 하지 않음
+    }
+    setReviewCurrentPage(pageNumber)
+  }
+
   return (
     <div>
       <Header />
@@ -234,6 +249,27 @@ const MyPage = () => {
                   </p>
                 </div>
               ))}
+              {reviewList.length > 0 ? (
+                <div className={styles.reviewPagingBox}>
+                  {Array.from(
+                    { length: reviewPageLength },
+                    (_, i) => i + 1,
+                  ).map((pageNumber) => (
+                    <span
+                      key={pageNumber}
+                      className={`${styles.reviewPagenum} ${
+                        pageNumber === reviewCurrentPage ? styles.active : ''
+                      }`}
+                      onClick={() => handleReviewPageChange(pageNumber)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {pageNumber}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p>검색된 가게가 없습니다.</p>
+              )}
             </div>
           </ul>
           <div className={styles.nameBox2}>
