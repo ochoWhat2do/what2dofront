@@ -28,17 +28,14 @@ const Footer = () => {
   return (
     <div>
       <footer className={styles.footer}>
-        <div className={styles.footerlogo}>
-          <Link href="/">
-            <img src="/images/what2do_logo.png" alt="로고 이미지" width="80" />
-          </Link>
-        </div>
         <nav className={styles.nav}>
           <ul>
-            <>
-              {privacyButtons}
-              {policyButtons}
-            </>
+            <div className={styles.buttonWrapper}>
+              <>
+                {privacyButtons}
+                {policyButtons}
+              </>
+            </div>
           </ul>
         </nav>
         <div className={styles.companyInfo}>
