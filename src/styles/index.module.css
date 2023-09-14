@@ -61,7 +61,7 @@
 
 .flex-store {
   margin-left: 100px; /* 100px 왼쪽 마진 설정 */
-  padding-bottom: 100px;
+  padding-bottom: 80px;
 }
 
 .storePagingBox {
@@ -88,4 +88,13 @@
   border-color: purple; /* 활성 페이지 번호의 보더 색상 변경 */
   background-color: purple; /* 활성 페이지 번호의 배경색 변경 */
   color: white; /* 활성 페이지 번호의 텍스트 색상 변경 */
+}
+
+.index-btn-move1 {
+  padding: 10px 20px;
+  background-color: #7a2dd2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
