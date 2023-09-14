@@ -21,28 +21,25 @@
   height: 40px;
   padding: 0 20px;
   background-color: #7a2dd2;
-}
-
-.footerNavItem {
-  margin-right: 20px;
   color: white;
 }
 
-/* Add this style to align profile image and logout button in a row */
-.footerNavItem img,
-.footerNavItem button {
-  vertical-align: middle;
-}
-.footer-navItem img {
-  height: 10px; /* Set the height to a value smaller than .header height */
-}
-
-.footerlogo {
+/* 중앙 정렬 및 스타일 수정 */
+.footerNavItem {
   display: flex;
   align-items: center;
 }
 
-.footerlogoImage {
-  width: 100px;
-  height: auto;
+.buttonWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 50px;
+}
+
+.buttonWrapper button {
+  background-color: #7a2dd2;
+  color: white; /* 버튼 텍스트 색상 설정 */
+  border: none;
+  padding: 10px 20px; /* 버튼 여백 조절 */
+  cursor: pointer;
 }
