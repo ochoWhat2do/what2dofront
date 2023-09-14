@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 80px;
+  height: 45px;
   padding: 0 20px;
   background-color: #7a2dd2;
   position: fixed;
@@ -34,7 +34,7 @@
   vertical-align: middle;
 }
 .footer-navItem img {
-  height: 40px; /* Set the height to a value smaller than .header height */
+  height: 10px; /* Set the height to a value smaller than .header height */
 }
 
 .footerlogo {

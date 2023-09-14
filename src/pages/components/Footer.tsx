@@ -30,7 +30,7 @@ const Footer = () => {
       <footer className={styles.footer}>
         <div className={styles.footerlogo}>
           <Link href="/">
-            <img src="/images/what2do_logo.png" alt="로고 이미지" width="80" />
+            <img src="/images/what2do_logo.png" alt="로고 이미지" width="45" />
           </Link>
         </div>
         <nav className={styles.nav}>

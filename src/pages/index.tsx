@@ -224,6 +224,7 @@ export default function Home() {
                       src={store.picture || 'images/not_found_square.png'}
                       alt=""
                       onClick={() => handleViewStore(store.storeKey)}
+                      style={{ cursor: 'pointer' }}
                     />
                     <div className="inner">
                       <input
@@ -276,6 +277,7 @@ export default function Home() {
                       src={store.picture || 'images/not_found_square.png'}
                       alt=""
                       onClick={() => handleViewStore(store.storeKey)}
+                      style={{ cursor: 'pointer' }}
                     />
                     <div className="inner">
                       <input

@@ -43,7 +43,7 @@
 
 .review-id-submit {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #7a2dd2;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -52,9 +52,9 @@
 
 .review-id-delete {
   padding: 10px 20px;
-  background-color: #ffff00;
-  color: #fff;
-  border: none;
+  background-color: #fff;
+  color: #7a2dd2;
+  border: 1px solid #7a2dd2;
   border-radius: 5px;
   cursor: pointer;
   margin-left: 10px;
