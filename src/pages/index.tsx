@@ -187,9 +187,7 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <h1>홈 페이지</h1>
       <div>
-        <h2>메인화면</h2>
         <div className="index-container">
           <div className={styles.searchBox}>
             <select
@@ -214,6 +212,7 @@ export default function Home() {
               />
             </button>
           </div>
+          <div className={styles.title}>상위 검색순위 맛집</div>
           <div className={`flex flex-wrap ${styles['flex-store']}`}>
             {storeList.length > 0 ? (
               storeList.map((store, index) => (
@@ -266,7 +265,8 @@ export default function Home() {
               <p>검색된 가게가 없습니다.</p>
             )}
           </div>
-          <div>리뷰가 많은 맛집</div>
+          <hr></hr>
+          <div className={styles.title}>리뷰가 많은 맛집</div>
           <div className={`flex flex-wrap ${styles['flex-store']}`}>
             {storeListByReview && storeListByReview.length > 0 ? (
               storeListByReview.map((store, index) => (
