@@ -93,7 +93,7 @@ const reviewDetailPage = () => {
         },
       )
 
-      const commentList = response.data
+      const commentList = response.data.commentList
 
       // 댓글목록 업데이트
       setCommentList(commentList)
