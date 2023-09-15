@@ -64,7 +64,6 @@ export default function Home() {
 
   const getStoreList = async (searchQuery: string) => {
     try {
-      debugger
       const response = await axios.get(`${apiBaseUrl}/api/daum/search`, {
         params: {
           query: searchQuery,
@@ -151,7 +150,11 @@ export default function Home() {
             storeKey: item.storeKey,
           }),
         )
-
+        setPageLength(
+          Math.ceil(
+            response.data.pageCnt / response.data.storeCategoryList.length,
+          ),
+        )
         setStoreList(formattedData)
       }
     } catch (error) {
@@ -160,7 +163,6 @@ export default function Home() {
   }
 
   const handlePageChange = (pageNumber: number) => {
-    debugger
     if (pageNumber < 1 || pageNumber > pageLength) {
       return // 페이지 번호가 유효 범위를 벗어나면 아무 작업도 하지 않음
     }
