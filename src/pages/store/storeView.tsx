@@ -392,6 +392,15 @@ export default function Home() {
                   </div>
                 ))}
             </div>
+            {reviewPageLength > reviewCurrentPage && (
+              <button
+                className={`${styles.loadMoreButton} ${styles.horizontalCenter}`}
+                onClick={handleLoadMoreReviews}
+                disabled={isLoadingMore}
+              >
+                {isLoadingMore ? '로딩 중...' : '리뷰 더 보기'}
+              </button>
+            )}
           </div>
         </div>
         {/* 오른쪽 컨텐츠 영역 */}
