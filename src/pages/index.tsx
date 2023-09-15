@@ -87,24 +87,32 @@ export default function Home() {
       window.alert('검색어를 입력하세요.')
       return
     }
-
-    // 검색어가 띄어쓰기로 2개의 단어로 이루어져 있는지 확인
     const words = searchQuery.split(' ')
-    if (words.length !== 2) {
-      window.alert('검색어는 2개의 단어로 이루어져야 합니다.')
-      return
-    }
+    if (selectedOption === 'keyword') {
+      // 검색어가 띄어쓰기로 2개의 단어로 이루어져 있는지 확인
+      if (words.length !== 2) {
+        window.alert('검색어는 2개의 단어로 이루어져야 합니다.')
+        return
+      }
 
-    // 검색어에 "맛집" 포함여부 확인
-    if (!words.some((word) => ['맛집'].includes(word))) {
-      window.alert("검색어에 '맛집'을 포함해야 합니다.")
-      return
+      // 검색어에 "맛집" 포함여부 확인
+      if (!words.some((word) => ['맛집'].includes(word))) {
+        window.alert("검색어에 '맛집'을 포함해야 합니다.")
+        return
+      }
+    } else if (selectedOption === 'category') {
+      if (words.length !== 1) {
+        window.alert('카테고리 검색어는 1개의 단어로 이루어져야 합니다.')
+        return
+      }
     }
 
     if (auth) {
       if (selectedOption === 'keyword') {
+        setCurrentPage(1)
         getStoreList(searchQuery)
       } else if (selectedOption === 'category') {
+        setCurrentPage(1)
         getStoreListByCategory(searchQuery)
       }
     }

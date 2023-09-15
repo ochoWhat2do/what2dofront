@@ -36,6 +36,19 @@ const Header = () => {
   const handleMyPage = () => {
     router.push('/users/myPage')
   }
+
+  const handleMainPage = () => {
+    const authCookie = getCookie('authorization')
+
+    if (!authCookie) {
+      // If authorization cookie is not present, redirect to login
+      router.push('/login')
+      return
+    } else {
+      router.push('/')
+    }
+  }
+
   const isAuthenticated = !!getCookie('authorization') // Convert to boolean
   const [isClientSideRendered, setIsClientSideRendered] = useState(false)
   useEffect(() => {
@@ -84,13 +97,15 @@ const Header = () => {
     </li>
   )
 
+  const mainLink = (
+    <div className={styles.mainImg} onClick={handleMainPage}>
+      <img src="/images/what2do_logo.png" alt="로고 이미지" width="80" />
+    </div>
+  )
+
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>
-        <Link href="/">
-          <img src="/images/what2do_logo.png" alt="로고 이미지" width="80" />
-        </Link>
-      </div>
+      <div className={styles.logo}>{mainLink}</div>
       <nav className={styles.nav}>
         <ul>
           {isClientSideRendered && (

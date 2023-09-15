@@ -79,14 +79,14 @@
   margin-right: 5px; /* 각 페이지 번호 사이의 간격 */
   cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 링크임을 나타냅니다. */
   font-size: 18px; /* 글자 크기 */
-  border: 1px solid purple; /* 1px 실선 보더 설정 */
+  border: 1px solid #7a2dd2; /* 1px 실선 보더 설정 */
   padding: 5px 10px; /* 내부 여백 설정 */
   border-radius: 3px; /* 둥근 모서리를 위한 설정 */
 }
 
-.pagenum .active {
-  border-color: purple; /* 활성 페이지 번호의 보더 색상 변경 */
-  background-color: purple; /* 활성 페이지 번호의 배경색 변경 */
+.pagenum.active {
+  border-color: #7a2dd2; /* 활성 페이지 번호의 보더 색상 변경 */
+  background-color: #7a2dd2; /* 활성 페이지 번호의 배경색 변경 */
   color: white; /* 활성 페이지 번호의 텍스트 색상 변경 */
 }
 

@@ -180,7 +180,6 @@ const MyPage = () => {
   }
 
   const handleReviewPageChange = (pageNumber: number) => {
-    debugger
     if (pageNumber < 1 || pageNumber > reviewPageLength) {
       return // 페이지 번호가 유효 범위를 벗어나면 아무 작업도 하지 않음
     }
