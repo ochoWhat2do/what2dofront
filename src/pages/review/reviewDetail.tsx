@@ -48,6 +48,7 @@ const reviewDetailPage = () => {
   // 상태를 관리할 수 있는 새로운 state 추가
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
   const [isLiked, setIsLiked] = useState(false)
+  const loginUserInfo = getCookie('user_info')
 
   useEffect(() => {
     getReiview()
@@ -379,20 +380,23 @@ const reviewDetailPage = () => {
                     />
                   </div>
                 </div>
-                <div className={styles['review-button-container']}>
-                  <button
-                    className={styles['review-id-move']}
-                    onClick={(e) => handleReviewEditClick(e)}
-                  >
-                    수정
-                  </button>
-                  <button
-                    className={styles['review-id-delete']}
-                    onClick={handleDeleteReview}
-                  >
-                    삭제
-                  </button>
-                </div>
+                {/* 작성자 이메일과 현재 로그인한 유저의 이메일 비교 */}
+                {reviewModel.createEmail === loginUserInfo.email && (
+                  <>
+                    <button
+                      className={styles['review-id-move']}
+                      onClick={(e) => handleReviewEditClick(e)}
+                    >
+                      수정
+                    </button>
+                    <button
+                      className={styles['review-id-delete']}
+                      onClick={handleDeleteReview}
+                    >
+                      삭제
+                    </button>
+                  </>
+                )}
               </div>
             )}
             <h2 className={styles.title1}>댓글</h2>

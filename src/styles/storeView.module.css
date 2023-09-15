@@ -131,3 +131,19 @@
 .loadMoreButton {
   width: 40px;
 }
+
+.loadMoreButton {
+  color: #fff;
+  margin-left: 20px;
+  height: 30px;
+  width: 200px;
+  size: 15px;
+  background-color: #7a2dd2;
+  margin-bottom: 20px;
+}
+
+.horizontalCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

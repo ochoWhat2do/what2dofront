@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import Header from '../components/Header'
 import { getCookie, setCookie } from '../../utils/cookie'
 import styles from '../../styles/storeView.module.css'
-import Link from 'next/link'
 import { KAKAO as KAKAOVALUE } from '../../variables/common'
 
 interface Store {
@@ -392,6 +391,15 @@ export default function Home() {
                   </div>
                 ))}
             </div>
+            {reviewPageLength > reviewCurrentPage && (
+              <button
+                className={`${styles.loadMoreButton} ${styles.horizontalCenter}`}
+                onClick={handleLoadMoreReviews}
+                disabled={isLoadingMore}
+              >
+                {isLoadingMore ? '로딩 중...' : '리뷰 더 보기'}
+              </button>
+            )}
           </div>
         </div>
         {/* 오른쪽 컨텐츠 영역 */}
