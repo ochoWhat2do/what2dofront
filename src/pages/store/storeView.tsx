@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import Header from '../components/Header'
 import { getCookie, setCookie } from '../../utils/cookie'
 import styles from '../../styles/storeView.module.css'
-import Link from 'next/link'
 import { KAKAO as KAKAOVALUE } from '../../variables/common'
 
 interface Store {
