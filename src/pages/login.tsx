@@ -82,7 +82,7 @@ const Login = () => {
       <div className={styles['login-form']}>
         {' '}
         {/* Use styles["class-name"] */}
-        <div className={styles['login-title']}>오늘 뭐하지? 로그인</div>
+        <div className={styles['login-title']}>오늘 뭐먹지? 로그인</div>
         <div className={styles['login-input-container']}>
           <div className="login-id-label">이메일</div>
           <input
