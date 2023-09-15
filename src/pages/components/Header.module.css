@@ -38,3 +38,7 @@
 .navItem img {
   height: 40px; /* Set the height to a value smaller than .header height */
 }
+
+.mainImg {
+  cursor: pointer;
+}
