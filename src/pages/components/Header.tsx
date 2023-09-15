@@ -43,7 +43,6 @@ const Header = () => {
     if (!authCookie) {
       // If authorization cookie is not present, redirect to login
       router.push('/login')
-      return
     } else {
       router.push('/')
     }
