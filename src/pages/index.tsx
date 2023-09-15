@@ -29,16 +29,18 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedOption, setSelectedOption] = useState('keyword') // 초기 선택값
   const [pageLength, setPageLength] = useState(1) // 초기값은 1로 설정
-  const [currentPage, setCurrentPage] = useState<number>(1) // 초기값은 1로 설정
+  const [currentPage, setCurrentPage] = useState<number>(1)
   const [storeListByReview, setStoreListByReview] = useState<Store[]>([]) // Updated state
+  const [initYn, setInitYn] = useState(false) // 초기값은 false로 설정
 
   useEffect(() => {
-    if (auth) {
+    if (auth && !initYn) {
       setSearchQuery(query)
-      getStoreList(query)
+      getStoreList(query) // true 값 추가: 초기 호출임을 나타내는 플래그
       getStoreListByReview()
+      setInitYn(true) // 초기화를 마쳤음을 나타내는 플래그를 true로 설정
     }
-  }, [])
+  }, [auth, initYn])
 
   const handleViewStore = (storeKey: string) => {
     viewStore(storeKey)
@@ -62,6 +64,7 @@ export default function Home() {
 
   const getStoreList = async (searchQuery: string) => {
     try {
+      debugger
       const response = await axios.get(`${apiBaseUrl}/api/daum/search`, {
         params: {
           query: searchQuery,
@@ -109,10 +112,14 @@ export default function Home() {
 
     if (auth) {
       if (selectedOption === 'keyword') {
-        setCurrentPage(1)
+        if (currentPage !== 1) {
+          setCurrentPage(1)
+        }
         getStoreList(searchQuery)
       } else if (selectedOption === 'category') {
-        setCurrentPage(1)
+        if (currentPage !== 1) {
+          setCurrentPage(1)
+        }
         getStoreListByCategory(searchQuery)
       }
     }
@@ -153,6 +160,7 @@ export default function Home() {
   }
 
   const handlePageChange = (pageNumber: number) => {
+    debugger
     if (pageNumber < 1 || pageNumber > pageLength) {
       return // 페이지 번호가 유효 범위를 벗어나면 아무 작업도 하지 않음
     }
@@ -161,10 +169,12 @@ export default function Home() {
 
   // currentPage와 selectedOption가 변경될 때마다 getStoreList 실행
   useEffect(() => {
-    if (selectedOption === 'keyword') {
-      getStoreList(searchQuery)
-    } else if (selectedOption === 'category') {
-      getStoreListByCategory(searchQuery)
+    if (initYn) {
+      if (selectedOption === 'keyword') {
+        getStoreList(searchQuery)
+      } else if (selectedOption === 'category') {
+        getStoreListByCategory(searchQuery)
+      }
     }
   }, [currentPage])
 
