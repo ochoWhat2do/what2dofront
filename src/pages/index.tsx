@@ -14,8 +14,15 @@ interface Store {
   roadAddress: string
   latitude: string
   longitude: string
-  picture: string
   storeKey: string
+  images: S3FileDto[]
+}
+
+interface S3FileDto {
+  originalFileName: string
+  uploadFileName: string
+  uploadFilePath: string
+  uploadFileUrl: string
 }
 
 export default function Home() {
@@ -146,7 +153,7 @@ export default function Home() {
             roadAddress: item.roadAddress,
             latitude: item.latitude,
             longitude: item.longitude,
-            picture: item.picture,
+            images: item.images,
             storeKey: item.storeKey,
           }),
         )
@@ -197,7 +204,7 @@ export default function Home() {
           Authorization: bearer + auth,
         },
       })
-
+      console.log(response.data)
       setStoreListByReview(response.data) // Set the fetched data to the state
     } catch (error) {
       console.error('Error fetching profile:', error)
@@ -232,15 +239,24 @@ export default function Home() {
               />
             </button>
           </div>
-          <div className={styles.title}>상위 검색순위 맛집</div>
+          <div className={styles.title}>맛집 검색결과</div>
           <div className={`flex flex-wrap ${styles['flex-store']}`}>
             {storeList.length > 0 ? (
               storeList.map((store, index) => (
-                <div key={index} className="w-1/3">
+                <div
+                  key={index}
+                  className="w-1/3"
+                  style={{ marginBottom: '20px' }}
+                >
                   {/* Adjusted class here */}
                   <section className="box feature">
                     <img
-                      src={store.picture || 'images/not_found_square.png'}
+                      className={styles.storeImage}
+                      src={
+                        store.images && store.images.length > 0
+                          ? store.images[0].uploadFileUrl
+                          : 'images/not_found_square.png'
+                      }
                       alt=""
                       onClick={() => handleViewStore(store.storeKey)}
                       style={{ cursor: 'pointer' }}
@@ -294,7 +310,12 @@ export default function Home() {
                   {/* Adjusted class here */}
                   <section className="box feature">
                     <img
-                      src={store.picture || 'images/not_found_square.png'}
+                      className={styles.storeImage}
+                      src={
+                        store.images && store.images.length > 0
+                          ? store.images[0].uploadFileUrl
+                          : 'images/not_found_square.png'
+                      }
                       alt=""
                       onClick={() => handleViewStore(store.storeKey)}
                       style={{ cursor: 'pointer' }}
