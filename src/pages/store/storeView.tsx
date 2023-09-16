@@ -15,10 +15,18 @@ interface Store {
   roadAddress: string
   latitude: string
   longitude: string
-  picture: string
   storeKey: string
   isFavorite: boolean
+  images: S3FileDto[]
 }
+
+interface S3FileDto {
+  originalFileName: string
+  uploadFileName: string
+  uploadFilePath: string
+  uploadFileUrl: string
+}
+
 interface Review {
   id: number
   title: string
@@ -330,7 +338,11 @@ export default function Home() {
               <div className={styles.storeItem}>
                 <img
                   className={styles.storeImage}
-                  src={storeModel.picture || '../images/not_found_square.png'}
+                  src={
+                    storeModel.images && storeModel.images.length > 0
+                      ? storeModel.images[0].uploadFileUrl
+                      : '../images/not_found_square.png'
+                  }
                   alt=""
                 />
                 <div className={styles.storeInfo}>
