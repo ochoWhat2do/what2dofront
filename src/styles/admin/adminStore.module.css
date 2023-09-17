@@ -1,0 +1,132 @@
+/* adminMain.module.css */
+.container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.leftContent {
+  flex: 2; /* 왼쪽 컨텐츠 영역이 남은 공간을 모두 차지하도록 설정 */
+}
+
+.rightContent {
+  flex: 1; /* 오른쪽 컨텐츠 영역이 남은 공간을 모두 차지하도록 설정 */
+  padding: 20px; /* 내용과의 여백을 추가할 수 있습니다. */
+}
+
+.menuTitle {
+  margin: 5px 0 0 20px;
+}
+
+.navItem {
+  margin-right: 20px;
+  color: violet;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  border: 2px solid purple;
+  border-radius: 50px;
+  margin: 40px 500px 60px 500px;
+  padding: 10px;
+}
+
+.searchBox input {
+  border: 2px solid purple;
+  padding: 5px;
+  width: 400px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.searchBox button {
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* 화면 너비가 768px 이하인 경우 스타일 조정 */
+@media (max-width: 768px) {
+  .searchBox {
+    margin: 20px 50px; /* 좌우 여백 조정 */
+    padding: 10px;
+  }
+
+  .searchBox input {
+    width: 80%; /* 입력 필드 너비를 80%로 조정 */
+    max-width: 300px; /* 최대 너비 설정 */
+  }
+}
+
+/* 화면 너비가 480px 이하인 경우 스타일 조정 */
+@media (max-width: 480px) {
+  .searchBox {
+    margin: 20px 20px; /* 좌우 여백을 더 줄임 */
+    padding: 10px;
+  }
+
+  .searchBox input {
+    width: 100%; /* 입력 필드 너비를 100%로 조정하여 가득 채우도록 함 */
+    max-width: 100%; /* 최대 너비 설정 */
+  }
+}
+
+.flex-store {
+  margin-left: 100px; /* 100px 왼쪽 마진 설정 */
+  padding-bottom: 80px;
+}
+
+.storePagingBox {
+  text-align: center; /* 텍스트 가운데 정렬 */
+  margin-top: 20px; /* 상단 마진 추가 */
+  margin-left: 40%; /* 좌우 마진을 auto로 설정하여 가운데 정렬합니다. */
+  margin-right: auto;
+  margin-bottom: 20px;
+  display: flex; /* Flexbox를 사용합니다. */
+  justify-content: center; /* 가로 가운데 정렬을 위해 가로 방향으로 가운데 정렬합니다. */
+}
+
+.pagenum {
+  display: inline-block; /* 인라인 블록 요소로 설정하여 옆으로 배열됩니다. */
+  margin-right: 5px; /* 각 페이지 번호 사이의 간격 */
+  cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 링크임을 나타냅니다. */
+  font-size: 18px; /* 글자 크기 */
+  border: 1px solid #7a2dd2; /* 1px 실선 보더 설정 */
+  padding: 5px 10px; /* 내부 여백 설정 */
+  border-radius: 3px; /* 둥근 모서리를 위한 설정 */
+}
+
+.pagenum.active {
+  border-color: #7a2dd2; /* 활성 페이지 번호의 보더 색상 변경 */
+  background-color: #7a2dd2; /* 활성 페이지 번호의 배경색 변경 */
+  color: white; /* 활성 페이지 번호의 텍스트 색상 변경 */
+}
+
+.index-btn-move1 {
+  padding: 10px 20px;
+  background-color: #7a2dd2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 20px;
+  color: #7a2dd2;
+  margin: 20px 0 30px 100px;
+}
+
+.storeImage {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 8px;
+}

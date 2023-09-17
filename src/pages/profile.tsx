@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import { getCookie, setCookie } from '../utils/cookie'
+import { getCookie, setCookie, removeCookie } from '../utils/cookie'
 import { useRouter } from 'next/router'
 import styles from '../styles/profile.module.css' // Import profile.module.css
 
@@ -138,9 +138,11 @@ const Profile = () => {
   }
 
   const deleteAccount = async () => {
-    if (!password) {
-      window.alert('비밀번호를 입력하세요.')
-      return
+    if (!socialType || socialType === 'NONE') {
+      if (password === '') {
+        window.alert('비밀번호를 입력하여 주세요.')
+        return
+      }
     }
 
     try {
@@ -155,6 +157,9 @@ const Profile = () => {
         data: withdrawalData,
       })
       window.alert('회원탈퇴를 하였습니다.')
+      removeCookie('authorization')
+      removeCookie('authorization_refresh')
+      removeCookie('user_info')
       router.push('/login')
     } catch (error: any) {
       window.alert(error.response.data.statusMessage)

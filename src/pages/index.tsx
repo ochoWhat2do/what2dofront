@@ -176,7 +176,7 @@ export default function Home() {
     setCurrentPage(pageNumber)
   }
 
-  // currentPage와 selectedOption가 변경될 때마다 getStoreList 실행
+  // currentPage가 변경될 때마다 getStoreList 실행
   useEffect(() => {
     if (initYn) {
       if (selectedOption === 'keyword') {
