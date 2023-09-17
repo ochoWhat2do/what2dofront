@@ -3,6 +3,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 65px;
+  overflow-y: auto; /* 세로 스크롤을 허용하고 내용이 넘칠 경우 스크롤 표시 */
+  max-height: calc(
+    100vh - 45px
+  ); /* 최대 높이를 화면 높이에서 footer의 높이(45px)를 뺀 값으로 설정 */
 }
 
 .review-title {

@@ -16,6 +16,7 @@ const Header = () => {
   const [userPicture, setUserPicture] = useState<string>('') // State to hold user picture
   const [isDataFetched, setIsDataFetched] = useState(false)
   const fetchUserInfo = useFetchUserInfo()
+  const [isAdmin, setIsAdmin] = useState<boolean>(false) // State to hold admin status
 
   const fetchUserInfoAndRender = async () => {
     await fetchUserInfo()
@@ -24,6 +25,8 @@ const Header = () => {
     if (user_info && user_info.picture) {
       setUserPicture(user_info.picture)
     }
+
+    setIsAdmin(user_info && user_info.role === 'ADMIN') // Set isAdmin based on user's role
 
     setIsDataFetched(true)
   }
@@ -35,6 +38,10 @@ const Header = () => {
   }
   const handleMyPage = () => {
     router.push('/users/myPage')
+  }
+
+  const handleAdminPage = () => {
+    router.push('/admin/adminMain')
   }
 
   const handleMainPage = () => {
@@ -102,6 +109,12 @@ const Header = () => {
     </div>
   )
 
+  const moveAdminButtons = isAuthenticated && isAdmin && (
+    <li className={styles.navItem}>
+      <button onClick={handleAdminPage}>관리자모드</button>
+    </li>
+  )
+
   return (
     <header className={styles.header}>
       <div className={styles.logo}>{mainLink}</div>
@@ -109,6 +122,7 @@ const Header = () => {
         <ul>
           {isClientSideRendered && (
             <>
+              {moveAdminButtons}
               {myPageButtons}
               {authenticatedContent}
               {authButtons}

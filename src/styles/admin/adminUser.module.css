@@ -1,0 +1,24 @@
+/* adminMain.module.css */
+.container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.leftContent {
+  flex: 2; /* 왼쪽 컨텐츠 영역이 남은 공간을 모두 차지하도록 설정 */
+}
+
+.rightContent {
+  flex: 1; /* 오른쪽 컨텐츠 영역이 남은 공간을 모두 차지하도록 설정 */
+  padding: 20px; /* 내용과의 여백을 추가할 수 있습니다. */
+}
+
+.menuTitle {
+  margin: 5px 0 0 20px;
+}
+
+.navItem {
+  margin-right: 20px;
+  color: violet;
+}
