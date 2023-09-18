@@ -46,14 +46,14 @@
   padding: 8px;
   border: 1px solid #000; /* 변경된 부분: 검은색 테두리로 수정 */
   border-radius: 5px;
-  background-color: #d3d3d3;
+  background-color: #fff;
   cursor: pointer;
 }
 
 .address-clear-button {
-  background-color: #808080;
-  color: #fff;
-  border: none;
+  background-color: #fff;
+  color: #7f0fff;
+  border: 1px solid #7f0fff;
   border-radius: 5px;
   cursor: pointer;
   padding: 10px 20px;
