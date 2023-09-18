@@ -157,11 +157,7 @@ export default function Home() {
             storeKey: item.storeKey,
           }),
         )
-        setPageLength(
-          Math.ceil(
-            response.data.pageCnt / response.data.storeCategoryList.length,
-          ),
-        )
+        setPageLength(response.data.pageCnt)
         setStoreList(formattedData)
       }
     } catch (error) {
