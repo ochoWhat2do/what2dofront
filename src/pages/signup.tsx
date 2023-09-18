@@ -5,6 +5,7 @@ import Footer from './components/Footer'
 import styles from '../styles/signup.module.css'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import Addr, { IAddr } from '../utils/addr' // Addr 컴포넌트를 import 합니다.
 
 const Signup = () => {
   const router = useRouter()
@@ -15,13 +16,18 @@ const Signup = () => {
   const [isAdmin, setIsAdmin] = useState(false) // State for admin checkbox
   const [adminToken, setAdminToken] = useState('') // State for admin token input
   const [nickname, setNickname] = useState('') // State for nickname input
-  const [city, setCity] = useState('') // State for city input
+  const [address, setAddress] = useState('') // State for address input
   const [gender, setGender] = useState('') // State for gender select
   const [passwordMismatch, setPasswordMismatch] = useState(false)
   const [verificationCode, setVerificationCode] = useState('')
   const [isVerificationCodeSent, setIsVerificationCodeSent] = useState(false)
   const [isValidCode, setIsValidCode] = useState(false)
   const [confirmCode, setConfirmCode] = useState('')
+  // 주소 정보를 담을 상태 추가
+  const [selectedAddress, setSelectedAddress] = useState<IAddr>({
+    address: '',
+    zonecode: '',
+  })
 
   // backend 주소
   const indexHost = 'http://localhost:8080' // 로컬
@@ -35,7 +41,7 @@ const Signup = () => {
 
     try {
       const response = await axios.get(
-        apiBaseUrl + `/api/users/checkEmail?email=${email}`,
+        apiBaseUrl + `/api/users/check-email?email=${email}`,
       )
 
       if (response.data) {
@@ -79,6 +85,11 @@ const Signup = () => {
       return
     }
 
+    if (!address) {
+      window.alert('주소를 선택해 주세요.')
+      return
+    }
+
     // Admin token validation
     if (isAdmin && !adminToken) {
       window.alert('사장님(판매자)인 경우 사장님 키를 입력해주세요.')
@@ -90,7 +101,7 @@ const Signup = () => {
         email,
         password,
         nickname,
-        city,
+        address,
         gender,
         admin: isAdmin, // Pass the admin state value
         adminToken,
@@ -107,6 +118,14 @@ const Signup = () => {
 
   const handleAdminCheckbox = () => {
     setIsAdmin(!isAdmin)
+  }
+
+  // 주소 선택 시 호출되는 콜백 함수
+  const handleSelectAddress = (data: IAddr) => {
+    // 선택한 주소 정보를 상태에 업데이트
+    setSelectedAddress(data)
+    // 선택한 주소 정보를 주소 입력 필드에 적용
+    setAddress(data.address)
   }
 
   const validateEmail = (email: string): boolean => {
@@ -254,16 +273,27 @@ const Signup = () => {
               onChange={(e) => setNickname(e.target.value)}
             />
           </div>
-          <div className={styles['signup-input-container']}>
-            <div className="signup-id-label">도시</div>
-            <input
-              type="text"
-              name="city"
-              id="city"
-              className={styles['signup-input-box']}
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-            />
+          <div className={styles['address-container']}>
+            <div className="signup-id-label">주소</div>
+            <div>
+              <input
+                type="text"
+                name="address"
+                id="address"
+                className={styles['signup-address-box']}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                readOnly
+              />
+            </div>
+            {/* 주소 검색 컴포넌트 추가 및 onSelectAddr 콜백 함수 전달 */}
+            <Addr onSelectAddr={handleSelectAddress} />
+            <button
+              className={styles['address-clear-button']}
+              onClick={() => setAddress('')}
+            >
+              지우기
+            </button>
           </div>
           <div className={styles['signup-input-container']}>
             <div className="signup-id-label">성별</div>
