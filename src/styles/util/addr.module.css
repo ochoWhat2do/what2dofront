@@ -1,0 +1,23 @@
+.address-id-search {
+  background-color: #008000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.zipcode-input-box {
+  width: 30%;
+  padding: 8px;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.address-input-box {
+  width: 50%;
+  padding: 8px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  margin-top: 10px; /* 주소 입력 필드의 상단 마진 추가 */
+}
